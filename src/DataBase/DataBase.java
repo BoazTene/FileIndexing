@@ -79,4 +79,8 @@ public class DataBase {
 	private boolean isDataBaseExists() {
 		return new File(this.path.getDbPath()).exists();
 	}
+	
+	public Connection getConnection() {
+		return this.connection;
+	}
 }
