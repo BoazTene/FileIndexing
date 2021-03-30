@@ -1,6 +1,11 @@
+import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import DataBase.DataBase;
 import DataBase.Table.ReadTable;
@@ -12,20 +17,24 @@ public class Main {
 //	    LinkedList<String> test = new LinkedList<String>();
 //	    test.add(0);
 //	    System.out.println(test);
-		try {
-			DataBase DataBase = new DataBase("C:/Users/user/Documents/Projects/FileIndexing/db/test.db");
-			System.out.println("New DataBase created!");
-			String[][] columns = {{"firstname", "text"}, {"middlename", "text"}, {"lastName", "text"}};
-			Table table = new Table(DataBase, "test", columns);
-			WriteTable wt = new WriteTable(table);
-//			
-//			String[] sColumn = {"Boaz", "Tene", "lahoh"};
-//			wt.newRow(sColumn);
-//			
-			ReadTable rt = new ReadTable(DataBase, table);
-			rt.getByColumn("middlename", "9");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		List<String> files = new ArrayList<>();
+		listf("C:/Users/user/Documents/Projects/FileIndexing", files);
+		System.out.println(files.size());
+//		System.out.println(Arrays.toString(files.toArray()));
 	}
+	
+	public static void listf(String directoryName, List<String> files) {
+	    File directory = new File(directoryName);
+
+	    // Get all files from a directory.
+	    File[] fList = directory.listFiles();
+	    if(fList != null)
+	        for (File file : fList) {      
+	            if (file.isFile()) {
+	                files.add(file.getPath());
+	            } else if (file.isDirectory()) {
+	                listf(file.getAbsolutePath(), files);
+	            }
+	        }
+	    }
 }

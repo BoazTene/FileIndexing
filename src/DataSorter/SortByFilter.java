@@ -1,10 +1,15 @@
 package DataSorter;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import DataBase.DataBase;
+import DataBase.Table.Table;
+import DataBase.Table.WriteTable;
 
 /**
  * 
@@ -13,28 +18,31 @@ import java.util.List;
  */
 public class SortByFilter {
 
-	public static void main(String[] args) {
-		MyFile file1 = new MyFile("file", new Extension("txt"), true);
-		MyFile file2 = new MyFile("itay", new Extension("txt"), true);
-		MyFile file3 = new MyFile("yossi", new Extension("txt"), false);
-		MyFile file4 = new MyFile("boaz", new Extension("txt"), false);
-		MyFile file5 = new MyFile("yoav", new Extension("txt"), false);
-		MyFile file6 = new MyFile("beni", new Extension("txt"), true);
-		MyFile file7 = new MyFile("goni", new Extension("txt"), true);
-		MyFile file8 = new MyFile("gilad", new Extension("txt"), false);
-		MyFile file9 = new MyFile("fredy", new Extension("txt"), true);
+	public static void main(String[] args) throws SQLException {
+//		MyFile file1 = new MyFile("file", new Extension("txt"), true);
+//		MyFile file2 = new MyFile("itay", new Extension("txt"), true);
+//		MyFile file3 = new MyFile("yossi", new Extension("txt"), false);
+//		MyFile file4 = new MyFile("balon", new Extension("txt"), false);
+//		MyFile file5 = new MyFile("yoav", new Extension("txt"), false);
+//		MyFile file6 = new MyFile("beni", new Extension("txt"), true);
+//		MyFile file7 = new MyFile("goni", new Extension("txt"), true);
+//		MyFile file8 = new MyFile("gilad", new Extension("txt"), false);
+//		MyFile file9 = new MyFile("fredy", new Extension("txt"), true);
+		List<String> filesList = new ArrayList<>();
+		listf("C:/Users/user/", filesList);
+		System.out.println(filesList.size());
 
-		List<MyFile> filesList = new ArrayList<MyFile>();
-		filesList.add(file1);
-		filesList.add(file2);
-		filesList.add(file3);
-		filesList.add(file4);
-		filesList.add(file5);
-		filesList.add(file6);
-		filesList.add(file7);
-		filesList.add(file8);
-		filesList.add(file9);
-		Iterator<MyFile> itr = null;
+//		List<String> filesList = new ArrayList<String>();
+//		filesList.add(file1);
+//		filesList.add(file2);
+//		filesList.add(file3);
+//		filesList.add(file4);
+//		filesList.add(file5);
+//		filesList.add(file6);
+//		filesList.add(file7);
+//		filesList.add(file8);
+//		filesList.add(file9);
+		Iterator<String> itr = null;
 		itr = filesList.iterator();
 		List<MyFile> fileNames = new ArrayList<MyFile>();
 		nameFilter nameFilter = new nameFilter(filesList);
@@ -44,6 +52,21 @@ public class SortByFilter {
 //		typeFilter.addIndex();
 		
 	}
+	
+	public static void listf(String directoryName, List<String> files) {
+	    File directory = new File(directoryName);
+
+	    // Get all files from a directory.
+	    File[] fList = directory.listFiles();
+	    if(fList != null)
+	        for (File file : fList) {      
+	            if (file.isFile()) {
+	                files.add(file.getPath());
+	            } else if (file.isDirectory()) {
+	                listf(file.getAbsolutePath(), files);
+	            }
+	        }
+	    }
 }
 
 /**
@@ -55,32 +78,52 @@ public class SortByFilter {
  *
  */
 class nameFilter implements Filter {
-	private List<MyFile> filesList;
-	private List<MyFile>[] alphabetArray;
+	private List<String> filesList;
+	private DataBase dataBase;
+	private String[][] columns = {{"value", "text"}};
 
-	public nameFilter(List<MyFile> filesList) {
+	public nameFilter(List<String> filesList) throws SQLException {
 		this.filesList = filesList;
-		this.alphabetArray = new List[128];
+		this.dataBase = new DataBase("C:/Users/user/Documents/Projects/FileIndexing/db/FirstLetter.db");
+		
 	}
-
+	
+	public void addToTable(String tableName, String[] data) throws SQLException {
+		Table table = new Table(this.dataBase, tableName, this.columns);
+		WriteTable wt = new WriteTable(table);
+		wt.newRow(data);
+	}
+	
 	@Override
-	public void addIndex() {
-		Iterator<MyFile> itr = null;
+	public void addIndex() throws SQLException {
+		Iterator<String> itr = null;
 		itr = filesList.iterator();
-		alphabetArray = new List[128];
+		int lahoh = 500000;
 		while (itr.hasNext()) {
-			MyFile thisFile = itr.next();
-			char firtLetter = thisFile.getName().charAt(0);
-			if (alphabetArray[firtLetter] == null)
-				alphabetArray[firtLetter] = new ArrayList<MyFile>();
-			alphabetArray[firtLetter].add(thisFile);
+			String thisFile = itr.next();
+			String[] data = {thisFile};
+			lahoh++;
+			System.out.println("lahoh: " + lahoh);
+			char firstChar = thisFile.substring(thisFile.lastIndexOf("\\")+1).charAt(0);
+			int i = 500000;
+			while(true) {
+				i++;
+				try {
+					addToTable(String.valueOf(firstChar), data);
+					break;
+				} catch (Exception e) {
+					try {
+						firstChar = thisFile.substring(thisFile.lastIndexOf("\\")+1).charAt(i);
+					} catch (Exception er) {
+						addToTable("onlyNumbers", data);
+						break;
+					}
+				}
+			}
+			
 		}
 
 	}
-	
-	public List<MyFile>[] getArray() {
-		return this.alphabetArray;
-	}
 
 	@Override
 	public void search() {
@@ -90,33 +133,33 @@ class nameFilter implements Filter {
 
 }
 
-class NameFilter {
-	private List<MyFile> filesList;
-	private String[][] result;
-	private int numberOfGroups;
-
-	public NameFilter(int numberOfGroups) {
-		this.numberOfGroups = numberOfGroups;
-		this.result = new String[numberOfGroups][];
-	}
-	
-	private int classify(String query) {
-		return query.charAt(0);
-	}
-	
-	public void addIndex(String query) {
-		System.out.println(classify(query));
-	}
-	
-//	public List<MyFile>[] getArray() {
-//		return this.alphabetArray;
+//class NameFilter {
+//	private List<MyFile> filesList;
+//	private String[][] result;
+//	private int numberOfGroups;
+//
+//	public NameFilter(int numberOfGroups) {
+//		this.numberOfGroups = numberOfGroups;
+//		this.result = new String[numberOfGroups][];
 //	}
-
-	public void search() {
-		// TODO Auto-generated method stub
-
-	}
-}
+//	
+//	private int classify(String query) {
+//		return query.charAt(0);
+//	}
+//	
+//	public void addIndex(String query) {
+//		System.out.println(classify(query));
+//	}
+//	
+////	public List<MyFile>[] getArray() {
+////		return this.alphabetArray;
+////	}
+//
+//	public void search() {
+//		// TODO Auto-generated method stub
+//
+//	}
+//}
 
 /**
  * 
