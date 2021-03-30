@@ -2,14 +2,15 @@ package DataSorter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * 
  * @author Itay Bar Nissim @
+ * 
  */
-
 public class SortByFilter {
 
 	public static void main(String[] args) {
@@ -38,12 +39,21 @@ public class SortByFilter {
 		List<MyFile> fileNames = new ArrayList<MyFile>();
 		nameFilter nameFilter = new nameFilter(filesList);
 		nameFilter.addIndex();
-		typeFilter typeFilter = new typeFilter(filesList);
-		typeFilter.addIndex();
+		
+//		typeFilter typeFilter = new typeFilter(filesList);
+//		typeFilter.addIndex();
 		
 	}
 }
 
+/**
+ * 
+ * Filter alphabetic order by first letter.
+ * 
+ * 
+ * @author Itay Bar Nissim
+ *
+ */
 class nameFilter implements Filter {
 	private List<MyFile> filesList;
 	private List<MyFile>[] alphabetArray;
@@ -67,6 +77,10 @@ class nameFilter implements Filter {
 		}
 
 	}
+	
+	public List<MyFile>[] getArray() {
+		return this.alphabetArray;
+	}
 
 	@Override
 	public void search() {
@@ -76,6 +90,41 @@ class nameFilter implements Filter {
 
 }
 
+class NameFilter {
+	private List<MyFile> filesList;
+	private String[][] result;
+	private int numberOfGroups;
+
+	public NameFilter(int numberOfGroups) {
+		this.numberOfGroups = numberOfGroups;
+		this.result = new String[numberOfGroups][];
+	}
+	
+	private int classify(String query) {
+		return query.charAt(0);
+	}
+	
+	public void addIndex(String query) {
+		System.out.println(classify(query));
+	}
+	
+//	public List<MyFile>[] getArray() {
+//		return this.alphabetArray;
+//	}
+
+	public void search() {
+		// TODO Auto-generated method stub
+
+	}
+}
+
+/**
+ * 
+ * Filter file extenstion.
+ * 
+ * @author Itay Bar Nissim
+ *
+ */
 class typeFilter implements Filter {
 	private List<MyFile> filesList;
 	private List<ArrayList<MyFile>> filteredByExtension;

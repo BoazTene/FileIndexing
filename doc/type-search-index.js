@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"DataBase.Table","l":"CreateTable"},{"p":"DataBase.Table","l":"ReadTable"},{"p":"DataBase.Table","l":"Table"},{"p":"DataBase.Table","l":"WriteTable"}]
