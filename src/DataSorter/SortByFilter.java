@@ -10,7 +10,10 @@ import java.util.List;
 import DataBase.DataBase;
 import DataBase.Table.Table;
 import DataBase.Table.WriteTable;
+import DataSorter.Filters.Filter;
 import DataSorter.Filters.NameFilter;
+import Search.Classify;
+import Search.Search;
 
 
 /**
@@ -19,23 +22,38 @@ import DataSorter.Filters.NameFilter;
  * 
  */
 public class SortByFilter {
-
-	public static void main(String[] args) throws SQLException {
-		List<String> filesList = new ArrayList<>();
-		listf("C:/Users/user/", filesList);
-		System.out.println(filesList.size());
-		Iterator<String> itr = null;
-		itr = filesList.iterator();
-		List<MyFile> fileNames = new ArrayList<MyFile>();
-		NameFilter nameFilter = new NameFilter(filesList);
+	private List<String> files;
+	
+//	public static void main(String[] args) throws SQLException {
+//		List<String> filesList = new ArrayList<>();		
+//		listf("C:/", filesList);
+//		System.out.println(filesList.size());
+//		Iterator<String> itr = null;
+//		itr = filesList.iterator();
+//		List<MyFile> fileNames = new ArrayList<MyFile>();
+//		
+//		NameFilter nameFilter = new NameFilter(filesList);
+//		nameFilter.addIndex();
+//		
+////		Filter[] filters = new Filter[1];
+////		filters[0] = new NameFilter();
+//		
+////		Search search = new Search("אמ", filters);
+////		search.search();
+////		typeFilter typeFilter = new typeFilter(filesList);
+////		typeFilter.addIndex();
+//		
+//	}
+	
+	public SortByFilter(String directoryName) throws SQLException {
+		this.files = new ArrayList<>();
+		listf(directoryName);
+		
+		NameFilter nameFilter = new NameFilter(this.files);
 		nameFilter.addIndex();
-		
-//		typeFilter typeFilter = new typeFilter(filesList);
-//		typeFilter.addIndex();
-		
 	}
 	
-	public static void listf(String directoryName, List<String> files) {
+	public void listf(String directoryName) {
 	    File directory = new File(directoryName);
 
 	    // Get all files from a directory.
@@ -45,7 +63,8 @@ public class SortByFilter {
 	            if (file.isFile()) {
 	                files.add(file.getPath());
 	            } else if (file.isDirectory()) {
-	                listf(file.getAbsolutePath(), files);
+	            	files.add(file.getPath());
+	                listf(file.getAbsolutePath());
 	            }
 	        }
     }
