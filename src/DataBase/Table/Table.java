@@ -54,9 +54,7 @@ public class Table {
 		}
 		
 		sql += ");";
-		
-		System.out.println(sql);
-		
+				
 		this.dataBase.execute(sql);
 	}
 	

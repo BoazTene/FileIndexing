@@ -1,7 +1,10 @@
 package DataBase.Table;
 
+import java.io.IOException;
+import java.nio.CharBuffer;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import DataBase.DataBase;
 
@@ -49,7 +52,6 @@ public class WriteTable {
 		}
 		
 		String sql = String.format("INSERT INTO %s(%s) VALUES (%s)", this.table.getDbName(), columns, values);
-		System.out.println(sql);
 		DataBase db = this.table.getDataBase();
 		
 		return db.getConnection().prepareStatement(sql);
@@ -62,10 +64,21 @@ public class WriteTable {
 	 * @throws SQLException
 	 */
 	public void newRow(String[] sColumn) throws SQLException {
+		ReadTable rt = new ReadTable(this.table.getDataBase(), this.table);
+
+		if (rt.getByColumn(this.table.getColumns()[0][0], sColumn[0]).length != 0 ) {
+	        String sql =String.format("DELETE FROM %s WHERE %s = ?;", this.table.getDbName(), this.table.getColumns()[0][0]);
+
+	        PreparedStatement pstmt = this.table.getDataBase().getConnection().prepareStatement(sql);
+	        pstmt.setString(1, sColumn[0]);
+	        pstmt.executeUpdate();
+		}
+		
 		for (int i = 0; i < sColumn.length; i++) {
 			this.pstmt.setString(i+1, sColumn[i]);
 		}
 		
 		this.pstmt.executeUpdate();
+
 	}
 }
