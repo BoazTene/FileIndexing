@@ -2,6 +2,8 @@ package DataBase.Table;
 
 import java.sql.SQLException;
 
+import org.sqlite.SQLiteErrorCode;
+
 import DataBase.DataBase;
 
 
@@ -54,8 +56,14 @@ public class Table {
 		}
 		
 		sql += ");";
-				
-		this.dataBase.execute(sql);
+		
+		try {
+			this.dataBase.execute(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(sql);
+			throw new SQLException("Eror Table 61");
+		}
 	}
 	
 	public String getDbName() {
