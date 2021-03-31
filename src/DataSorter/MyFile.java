@@ -1,5 +1,7 @@
 package DataSorter;
 
+import DataSorter.Filters.Extension;
+
 public class MyFile {
 		private String name;
 		private Extension extension;
