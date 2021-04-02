@@ -22,7 +22,7 @@ public class SortByFilter {
 
 	public static void main(String[] args) throws SQLException {
 		List<String> filesList = new ArrayList<>();
-		listf("C:/Users/user/", filesList);
+		listf("D:/Users/User/", filesList);
 		System.out.println(filesList.size());
 		Iterator<String> itr = null;
 		itr = filesList.iterator();

@@ -18,7 +18,7 @@ public class Main {
 //	    test.add(0);
 //	    System.out.println(test);
 		List<String> files = new ArrayList<>();
-		listf("C:/Users/user/Documents/Projects/FileIndexing", files);
+		listf("C:/Users/User/Documents/Projects/FileIndexing", files);
 		System.out.println(files.size());
 //		System.out.println(Arrays.toString(files.toArray()));
 	}

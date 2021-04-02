@@ -38,19 +38,24 @@ public class NameFilter implements Filter{
 	@Override
 	public void addIndex() throws SQLException {
 		Iterator<String> itr = null;
+		ExtensionFilter extensionFilter;
 		itr = filesList.iterator();
-		int lahoh = 500000;
+		int lahoh = 0;
 		while (itr.hasNext()) {
 			String thisFile = itr.next();
 			String[] data = {thisFile};
 			lahoh++;
 			System.out.println("lahoh: " + lahoh);
 			char firstChar = thisFile.substring(thisFile.lastIndexOf("\\")+1).charAt(0);
-			int i = 500000;
+			extensionFilter = new ExtensionFilter(String.valueOf(firstChar), thisFile);
+			extensionFilter.addIndex();
+			System.out.println(extensionFilter.getTableName());
+			int i = 0;
 			while(true) {
 				i++;
 				try {
-					addToTable(String.valueOf(firstChar), data);
+					
+					addToTable(extensionFilter.getTableName(), data);
 					break;
 				} catch (Exception e) {
 					try {
