@@ -67,5 +67,11 @@ public class ExtensionFilter implements Filter{
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public String[] classify(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
