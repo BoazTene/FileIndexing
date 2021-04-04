@@ -18,12 +18,39 @@ import DataBase.Table.WriteTable;
 import DataSorter.SortByFilter;
 import DataSorter.FileTracker.*;
 import DataSorter.FileTracker.EntryHandlers.Entry;
+import DataSorter.Filters.ExtensionFilter;
+import DataSorter.Filters.Filter;
+import DataSorter.Filters.NameFilter;
+import Search.Search;
+import DataSorter.FileTracker.*;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
 public class Main {
 	public static void main(String[] args) throws SQLException, IOException {
-		SortByFilter dataSorter = new SortByFilter("C:/");
+		
+		
+		Filter[] filters = new Filter[2];
+		filters[0] = new NameFilter();
+		filters[1] = new ExtensionFilter();
+		
+		
+		Path path = Paths.get("C:/Users/user/Documents/Projects/FileIndexing");
+		WatchDir watchDir = new WatchDir(path);
+		Entry entry = new EntryEvents();
+		watchDir.processEvents(entry, null);
+//		System.out.println(Arrays.toString(filters[1].classify("config")));
+//		SortByFilter dataSorter = new SortByFilter(filters, "C:/TASM");
+		
+		
+//		Search search = new Search(filters, "maze");
+//		System.out.println("Results:");
+//		String[] result = search.search();
+//		
+//		for (int i = 0; i < result.length; i++) {
+//			System.out.println((i+1) + ". " + result[i]);
+//		}
+//		System.out.println(Arrays.deepToString));
 //	    LinkedList<String> test = new LinkedList<String>();
 //	    test.add(0);
 //	    System.out.println(test);
@@ -50,4 +77,15 @@ public class Main {
 				}
 			}
 	}
+}
+
+
+class EntryEvents implements Entry {
+
+	@Override
+	public void newEntry(Kind kind, Path path) {
+		// TODO Auto-generated method stub
+		System.out.println("Path: " + path.getFileName() + ", Kind: " + kind);
+	}
+	
 }

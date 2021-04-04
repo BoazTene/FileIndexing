@@ -1,5 +1,7 @@
 package Search;
 
+import java.util.Arrays;
+
 import DataSorter.Filters.*;
 
 /**
@@ -84,6 +86,7 @@ public class Classify {
 	}
 	
 	private int findNumerology(char chr) {
+		chr = Character.toUpperCase(chr);
 		 char[][] num_val={{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
                  {1, 2, 3, 4, 5, 8, 3, 5, 1, 1, 2, 3, 4, 5, 7, 8, 1, 2, 3, 4, 6, 6, 6, 5, 1, 7}};
 		

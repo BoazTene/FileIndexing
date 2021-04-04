@@ -22,48 +22,39 @@ import Search.Search;
  * 
  */
 public class SortByFilter {
-
-//	public static void main(String[] args) throws SQLException {
-//		List<String> filesList = new ArrayList<>();
-//		listf("D:/Users/User/", filesList);
-//		System.out.println(filesList.size());
-//		Iterator<String> itr = null;
-//		itr = filesList.iterator();
-//		List<MyFile> fileNames = new ArrayList<MyFile>();
-//		NameFilter nameFilter = new NameFilter(filesList);
-//		nameFilter.addIndex();
-//		
-//		typeFilter typeFilter = new typeFilter(filesList);
-//		typeFilter.addIndex();
 	private List<String> files;
+	private DataBase dataBase;
+	private String[][] columns = {{"value", "text"}};
 	
-//	public static void main(String[] args) throws SQLException {
-//		List<String> filesList = new ArrayList<>();		
-//		listf("C:/", filesList);
-//		System.out.println(filesList.size());
-//		Iterator<String> itr = null;
-//		itr = filesList.iterator();
-//		List<MyFile> fileNames = new ArrayList<MyFile>();
-//		
-//		NameFilter nameFilter = new NameFilter(filesList);
-//		nameFilter.addIndex();
-//		
-////		Filter[] filters = new Filter[1];
-////		filters[0] = new NameFilter();
-//		
-////		Search search = new Search("×�×ž", filters);
-////		search.search();
-////		typeFilter typeFilter = new typeFilter(filesList);
-////		typeFilter.addIndex();
-//		
-//	}
 	
-	public SortByFilter(String directoryName) throws SQLException {
+	public SortByFilter(Filter[] filters, String directoryName) throws SQLException {
+		this.dataBase = new DataBase("db/FirstLetter.db");
+
 		this.files = new ArrayList<>();
 		listf(directoryName);
-		
-		NameFilter nameFilter = new NameFilter(this.files);
-		nameFilter.addIndex();
+		int index = 0	;
+
+		for (int i = index; i < this.files.size(); i++) {
+			String file = this.files.get(i);
+			System.out.println(index);
+			index++;
+			Classify classify = new Classify(filters, file);
+			System.out.println(classify.GetTableNameByFilters());
+			addToTable(classify.GetTableNameByFilters(), new String[]{file});
+		}
+//		for (String file : this.files) {
+//			System.out.println(index);
+//			index++;
+//			Classify classify = new Classify(filters, file);
+//			System.out.println(classify.GetTableNameByFilters());
+//			addToTable(classify.GetTableNameByFilters(), new String[]{file});
+//		}
+	}
+	
+	public void addToTable(String tableName, String[] data) throws SQLException {
+		Table table = new Table(this.dataBase, tableName, this.columns);
+		WriteTable wt = new WriteTable(table);
+		wt.newRow(data);
 	}
 	
 	public void listf(String directoryName) {

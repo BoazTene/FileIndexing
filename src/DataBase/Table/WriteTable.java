@@ -65,7 +65,6 @@ public class WriteTable {
 	 */
 	public void newRow(String[] sColumn) throws SQLException {
 		ReadTable rt = new ReadTable(this.table.getDataBase(), this.table);
-
 		if (rt.getByColumn(this.table.getColumns()[0][0], sColumn[0]).length != 0 ) {
 	        String sql =String.format("DELETE FROM %s WHERE %s = ?;", this.table.getDbName(), this.table.getColumns()[0][0]);
 

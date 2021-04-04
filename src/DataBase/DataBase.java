@@ -43,6 +43,30 @@ public class DataBase {
 		this.stmt = this.connection.createStatement();
 	}
 	
+	public String[] getTables() throws SQLException{
+		DatabaseMetaData metaData = this.connection.getMetaData();
+		String[] types = {"TABLE"};
+		//Retrieving the columns in the database
+		ResultSet tables = metaData.getTables(null, null, "%", types);
+
+		int size = 0;
+		while (tables.next()) {
+			size++;
+		}
+		
+		tables = metaData.getTables(null, null, "%", types);
+		tables.next();
+
+		String[] result = new String[size];
+
+		for (int i = 0; i < size; i++) {
+			result[i] = tables.getString("TABLE_NAME");
+			tables.next();
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * This method connects to existing DataBase.
 	 * 

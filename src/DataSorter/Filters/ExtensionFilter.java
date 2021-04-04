@@ -15,51 +15,19 @@ import DataSorter.MyFile;
  *
  */
 public class ExtensionFilter implements Filter{
-//	private List<MyFile> filesList;
-//	private List<ArrayList<MyFile>> filteredByExtension;
-	private String tableName;
-	private String path;
+	private String query;
+	private final String name = "ext";
 	
-	public ExtensionFilter(String tableName, String path) {
-		this.tableName = tableName;
-		this.path = path;
-		
-//		this.filesList = filesList;
-//		filteredByExtension = new ArrayList<ArrayList<MyFile>>();
+	public ExtensionFilter(String query) {
+		this.query = query;
 
 	}
-
+	
+	public ExtensionFilter() {}
+	
 	@Override
 	public void addIndex() {
-//		Iterator<MyFile> itr = null;
-//		ArrayList<MyFile> newExtension;
-//		ArrayList<MyFile> currentExtension;
-//		itr = filesList.iterator();
-//		while (itr.hasNext()) {
-//			MyFile thisFile = itr.next();
-//			Extension extension = thisFile.getExtension();
-//			int pointer = extension.getExtensionPointer();
-//			if (extension.getExtensionsList().isAddedToList() == false) {
-//				newExtension = new ArrayList<MyFile>();
-//				currentExtension = newExtension;
-//				filteredByExtension.add(newExtension);
-//				
-//			}
-//			else
-//				currentExtension= filteredByExtension.get(pointer);
-//			currentExtension.add(thisFile);
-//			
-		String extension = "";
-		
-		int i = path.lastIndexOf('.');
-
-			extension = path.substring(i+1);
-			tableName+=extension;
-
-		}
-	public String getTableName() {
-		return this.tableName;
-
+		String extension = classify(this.query)[0];
 	}
 
 	@Override
@@ -67,11 +35,91 @@ public class ExtensionFilter implements Filter{
 		// TODO Auto-generated method stub
 
 	}
+	
+	public char numberToStringNumber(char chr) {
+		final char[] unacceptableChars = {
+				'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+				'-', '_', '=', '+', '[', '{', ']', '}', '\\', '|', '/', '?',
+				'~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+				'.', '>', ',', '<', ';', ':', '\'', '"'};
+		
+		final String[] values = {
+				"one", 
+				"two",
+				"three",
+				"four",
+				"five",
+				"six",
+				"seven",
+				"eight",
+				"nine",
+				"zero",
+				"hyphen",
+				"dash",
+				"equal",
+				"plus",
+				"obrackets",
+				"obraces",
+				"cbrackets",
+				"cbraces",
+				"backslash",
+				"vertical",
+				"slash",
+				"quation",
+				"ampersand",
+				"exclamation",
+				"atsign",
+				"hashtag",
+				"dolar",
+				"precentage",
+				"power",
+				"and",
+				"mul",
+				"oparentheses",
+				"cparentheses",
+				"",
+				"bigger",
+				"comma",
+				"less",
+				"semicolon",
+				"colon",
+				"apostrophe",
+				"ellipsis"
+		};
+		
+		
+		
+		
+		try {
+			if (getIndexOf(chr, unacceptableChars) == -1) return chr;
+			return values[getIndexOf(chr, unacceptableChars)].charAt(0);
+		} catch (Exception e) {
+			return 's';
+		}		
+	}
+	
+	public int getIndexOf(char toSearch, char[] tab ) {
+		  for( int i=0; i< tab.length ; i ++ )
+		    if( tab[ i ] == toSearch)
+		     return i;
 
+		  return -1;
+	}
+	
 	@Override
 	public String[] classify(String query) {
-		// TODO Auto-generated method stub
-		return null;
+		query = query.substring(query.lastIndexOf('\\')+1);
+		if (!query.contains(".")) return new String[] {"", "ext"};
+		char[] extention = query.substring(query.lastIndexOf('.')+1).toCharArray();
+		for (int i = 0; i < extention.length; i++) {
+			extention[i] = numberToStringNumber(extention[i]);
+		}
+		return new String[]{new String(extention), "ext"};
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 }
 
