@@ -114,7 +114,7 @@ public class ExtensionFilter implements Filter{
 		for (int i = 0; i < extention.length; i++) {
 			extention[i] = numberToStringNumber(extention[i]);
 		}
-		return new String[]{new String(extention), "ext"};
+		return new String[]{new String(extention).replaceAll(" ", ""), "ext"};
 	}
 
 	@Override
