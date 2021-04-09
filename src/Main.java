@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import DataSorter.FileTracker.QuickScan.QuickScan;
 import com.sun.security.auth.UserPrincipal;
 
 import DataBase.DataBase;
@@ -28,6 +29,8 @@ import DataSorter.Filters.Filter;
 import DataSorter.Filters.NameFilter;
 import Search.Search;
 import DataSorter.FileTracker.*;
+import DataSorter.FileTracker.QuickScan.EntryHandler;
+import java.nio.file.WatchEvent;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -46,8 +49,9 @@ public class Main {
 		Filter[] filters = new Filter[2];
 		filters[0] = new NameFilter();
 		filters[1] = new ExtensionFilter();
-		
-//		
+
+		QuickScan quickScan = new QuickScan(filters,"db/FirstLetter.db", "C:/Users/user/Documents/Projects/FileIndexing");
+		quickScan.start();
 ////		Path path = Paths.get("C:/Users/user/Documents/Projects/FileIndexing");
 ////		WatchDir watchDir = new WatchDir(path);
 ////		Entry entry = new EntryEvents();

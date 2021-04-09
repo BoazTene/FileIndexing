@@ -56,7 +56,15 @@ public class WriteTable {
 		
 		return db.getConnection().prepareStatement(sql);
 	}
-	
+
+	public void deleteRow(String[] sColumn) throws SQLException {
+		String sql =String.format("DELETE FROM %s WHERE %s = ?;", this.table.getDbName(), this.table.getColumns()[0][0]);
+
+		PreparedStatement pstmt = this.table.getDataBase().getConnection().prepareStatement(sql);
+		pstmt.setString(1, sColumn[0]);
+		pstmt.executeUpdate();
+	}
+
 	/**
 	 * This method adds row to the table.
 	 * 
