@@ -1,6 +1,7 @@
 package DataBase;
 
 import java.sql.Statement;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -8,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
 
 /**
  * This class represents a database.
@@ -20,40 +20,41 @@ public class DataBase {
 	private Path path;
 	private Connection connection;
 	private Statement stmt;
-	
+
 	/**
 	 * Class constructor.
 	 * 
 	 * Sets the path field to new Path object.
 	 * 
-	 * Creates/connects to the database and save the connection to the connection field.
+	 * Creates/connects to the database and save the connection to the connection
+	 * field.
 	 * 
 	 * @param dbPath - The path to the DataBase.
 	 * @throws SQLException
 	 */
-	public DataBase (String dbPath) throws SQLException {
+	public DataBase(String dbPath) throws SQLException {
 		this.path = new Path(dbPath);
-		
+
 		if (isDataBaseExists()) {
 			this.connection = connectToDb();
 		} else {
 			this.connection = createDb();
 		}
-		
+
 		this.stmt = this.connection.createStatement();
 	}
-	
-	public String[] getTables() throws SQLException{
+
+	public String[] getTables() throws SQLException {
 		DatabaseMetaData metaData = this.connection.getMetaData();
-		String[] types = {"TABLE"};
-		//Retrieving the columns in the database
+		String[] types = { "TABLE" };
+		// Retrieving the columns in the database
 		ResultSet tables = metaData.getTables(null, null, "%", types);
 
 		int size = 0;
 		while (tables.next()) {
 			size++;
 		}
-		
+
 		tables = metaData.getTables(null, null, "%", types);
 		tables.next();
 
@@ -63,10 +64,11 @@ public class DataBase {
 			result[i] = tables.getString("TABLE_NAME");
 			tables.next();
 		}
-		
+
 		return result;
 	}
-	
+
+
 	/**
 	 * This method connects to existing DataBase.
 	 * 
@@ -76,7 +78,7 @@ public class DataBase {
 	private Connection connectToDb() throws SQLException {
 		return new ConnectDataBase(this.path.getDbPath()).getConnection();
 	}
-	
+
 	/**
 	 * This method creates + connect to non-existing DataBase.
 	 * 
@@ -86,7 +88,7 @@ public class DataBase {
 	private Connection createDb() throws SQLException {
 		return new CreateDataBase(this.path.getDbPath()).getConnection();
 	}
-	
+
 	/**
 	 * This method executes an SQL command on the DataBase.
 	 * 
@@ -94,9 +96,10 @@ public class DataBase {
 	 * @throws SQLException
 	 */
 	public void execute(String sql) throws SQLException {
-		this.stmt.execute(sql);
+			this.stmt.execute(sql);
+
 	}
-	
+
 	/**
 	 * Checks if a database is already exists.
 	 * 
@@ -105,7 +108,7 @@ public class DataBase {
 	private boolean isDataBaseExists() {
 		return new File(this.path.getDbPath()).exists();
 	}
-	
+
 	public Connection getConnection() {
 		return this.connection;
 	}

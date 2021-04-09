@@ -52,8 +52,8 @@ public class WriteTable {
 		}
 		
 		String sql = String.format("INSERT INTO %s(%s) VALUES (%s)", this.table.getDbName(), columns, values);
-		DataBase db = this.table.getDataBase();
 		
+		DataBase db = this.table.getDataBase();
 		return db.getConnection().prepareStatement(sql);
 	}
 	

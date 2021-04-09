@@ -24,7 +24,7 @@ import Search.Search;
 public class SortByFilter {
 	private List<String> files;
 	private DataBase dataBase;
-	private String[][] columns = {{"value", "text"}};
+	private String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
 	
 	
 	public SortByFilter(Filter[] filters, String directoryName) throws SQLException {
@@ -36,11 +36,12 @@ public class SortByFilter {
 
 		for (int i = index; i < this.files.size(); i++) {
 			String file = this.files.get(i);
+			
 			System.out.println(index);
 			index++;
 			Classify classify = new Classify(filters, file);
 			System.out.println(classify.GetTableNameByFilters());
-			addToTable(classify.GetTableNameByFilters(), new String[]{file});
+			addToTable(classify.GetTableNameByFilters(), new String[]{file,"J"});
 		}
 //		for (String file : this.files) {
 //			System.out.println(index);

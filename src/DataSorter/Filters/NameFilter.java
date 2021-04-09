@@ -20,7 +20,7 @@ import DataBase.Table.WriteTable;
 public class NameFilter implements Filter{
 	private List<String> filesList;
 	private DataBase dataBase;
-	private String[][] columns = {{"value", "text"}};
+	private String[][] columns = {{"value", "text"}, {"score", "integer"}};
 	private final String name = "fl";
 
 	public NameFilter(List<String> filesList) throws SQLException {
@@ -57,11 +57,8 @@ public class NameFilter implements Filter{
 
 	}
 
-	@Override
-	public void search() {
-		// TODO Auto-generated method stub
 
-	}
+
 	
 	public int getIndexOf(char toSearch, char[] tab ) {
 	  for( int i=0; i< tab.length ; i ++ )
@@ -146,9 +143,9 @@ public class NameFilter implements Filter{
 				'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
 				'-', '_', '=', '+', '[', '{', ']', '}', '\\', '|', '/', '?',
 				'~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-				'.', '>', ',', '<', ';', ':', '\'', '"'};
-			
+				'.', '>', ',', '<', ';', ':', '\'', '"'};	
 		char firstChar = query.substring(query.lastIndexOf("\\")+1).charAt(0);
+		
 		if(charContains(unacceptableChars, firstChar)) {
 			result = (String) numberToStringNumber(firstChar);
 		}

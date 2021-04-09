@@ -18,6 +18,7 @@ public class ExtensionFilter implements Filter{
 	private String query;
 	private final String name = "ext";
 	
+	// not in use
 	public ExtensionFilter(String query) {
 		this.query = query;
 
@@ -30,11 +31,8 @@ public class ExtensionFilter implements Filter{
 		String extension = classify(this.query)[0];
 	}
 
-	@Override
-	public void search() {
-		// TODO Auto-generated method stub
 
-	}
+
 	
 	public char numberToStringNumber(char chr) {
 		final char[] unacceptableChars = {
@@ -114,7 +112,7 @@ public class ExtensionFilter implements Filter{
 		for (int i = 0; i < extention.length; i++) {
 			extention[i] = numberToStringNumber(extention[i]);
 		}
-		return new String[]{new String(extention), "ext"};
+		return new String[]{new String(extention).replaceAll(" ", ""), "ext"};
 	}
 
 	@Override

@@ -35,15 +35,15 @@ public class Main {
 		filters[1] = new ExtensionFilter();
 		
 		
-		Path path = Paths.get("C:/Users/user/Documents/Projects/FileIndexing");
-		WatchDir watchDir = new WatchDir(path);
-		Entry entry = new EntryEvents();
-		watchDir.processEvents(entry, null);
+//		Path path = Paths.get("C:/Users/user/Documents/Projects/FileIndexing");
+//		WatchDir watchDir = new WatchDir(path);
+//		Entry entry = new EntryEvents();
+//		watchDir.processEvents(entry, null);
 //		System.out.println(Arrays.toString(filters[1].classify("config")));
-//		SortByFilter dataSorter = new SortByFilter(filters, "C:/TASM");
+		SortByFilter dataSorter = new SortByFilter(filters, "C:\\Users\\User\\Documents\\לימודים\\Hello1000");
 		
 		
-//		Search search = new Search(filters, "maze");
+//		Search search = new Search(filters, "Maze");
 //		System.out.println("Results:");
 //		String[] result = search.search();
 //		
@@ -58,7 +58,7 @@ public class Main {
 //		List<String> files = new ArrayList<>();
 //		listf("C:/Users/user/Documents/Projects/FileIndexing", files);
 //		System.out.println(files.size());
-//		System.out.println(Arrays.toString(files.toArray()));
+//		System.out.println(Arrays.toString(files.toArray())); 
 	
 
 	}

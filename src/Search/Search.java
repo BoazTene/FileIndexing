@@ -17,7 +17,7 @@ public class Search {
 	private DataBase dataBase;
 	private Table table;
 	private String query;
-	private String[][] columns = {{"value", "text"}};
+	private String[][] columns = {{"value", "text"}, {"score", "integer"}};
 	private Filter[] filters;
 
 	public Search(Filter[] filters, String query) throws SQLException {

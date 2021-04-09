@@ -7,7 +7,6 @@ import java.util.List;
 public interface Filter {
 	
 	public void addIndex() throws SQLException;
-	public void search();
 	public String[] classify(String query);
 	public String getName();
 

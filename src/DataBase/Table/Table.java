@@ -65,6 +65,9 @@ public class Table {
 			throw new SQLException("Eror Table 61");
 		}
 	}
+	public void orderByScore() {
+		String.format("SELECT * FROM %s ORDER BY score ASC", this.dbName);
+	}
 	
 	public String getDbName() {
 		return dbName;
