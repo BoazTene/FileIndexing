@@ -1,5 +1,6 @@
 package DataBase;
 
+import java.nio.file.Paths;
 import java.sql.Statement;
 
 import java.io.File;
@@ -21,6 +22,11 @@ public class DataBase {
 	private Connection connection;
 	private Statement stmt;
 
+
+
+	private java.nio.file.Path dbPath;
+	
+
 	/**
 	 * Class constructor.
 	 * 
@@ -32,7 +38,12 @@ public class DataBase {
 	 * @param dbPath - The path to the DataBase.
 	 * @throws SQLException
 	 */
-	public DataBase(String dbPath) throws SQLException {
+
+	
+
+	public DataBase (String dbPath) throws SQLException {
+		this.dbPath = Paths.get(dbPath);
+
 		this.path = new Path(dbPath);
 
 		if (isDataBaseExists()) {
@@ -111,5 +122,9 @@ public class DataBase {
 
 	public Connection getConnection() {
 		return this.connection;
+	}
+
+	public String getPath() {
+		return this.dbPath.toAbsolutePath().toString();
 	}
 }
