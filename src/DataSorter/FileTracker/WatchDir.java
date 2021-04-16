@@ -14,18 +14,20 @@ public class WatchDir {
 	private final WatchService watcher;
 	private final Map<WatchKey, Path> keys;
 	private RegisterDirectory registerDirectory;
+	private Path[] notAllowed;
 
 	@SuppressWarnings("unchecked")
 	static <T> WatchEvent<T> cast(WatchEvent<?> event) {
 		return (WatchEvent<T>) event;
 	}
 
-	public WatchDir(Path dir) throws IOException {
+	public WatchDir(Path dir, Path[] notAllowed) throws IOException {
+		this.notAllowed = notAllowed;
 		this.watcher = FileSystems.getDefault().newWatchService();
 		this.keys = new HashMap<WatchKey, Path>();
 
 		System.out.format("Scanning %s ...\n", dir);
-		this.registerDirectory = new RegisterDirectory(watcher, keys, dir);
+		this.registerDirectory = new RegisterDirectory(watcher, keys, dir, notAllowed);
 		this.registerDirectory.registerAll(dir);
 		System.out.println("Done.");
 	}

@@ -18,13 +18,13 @@ public class QuickScan {
     private DataBase dataBase;
     private Filter[] filters;
 
-    public QuickScan(Filter[] filters, String dbName, String dir) throws IOException, SQLException {
+    public QuickScan(Filter[] filters, String dbName, String dir, Path[] notAllowed) throws IOException, SQLException {
         this.dataBase = new DataBase(dbName);
         this.filters = filters;
         this.dir = Paths.get(dir);
         this.entry = new EntryHandler(this.dataBase, filters);
         this.overflow = new OverFlowHandler();
-        this.watchDir = new WatchDir(this.dir);
+        this.watchDir = new WatchDir(this.dir, notAllowed);
     }
 
     public void start() throws SQLException {

@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class EntryHandler implements Entry {
     private Filter[] filters;
     private DataBase dataBase;
-    private String[][] columns = {{"value", "text"}};
+    private String[][] columns = {{"value", "text"}, {"score", "text"}};
     private String[] unacceptable;
 
     public EntryHandler(DataBase dataBase, Filter[] filters) {

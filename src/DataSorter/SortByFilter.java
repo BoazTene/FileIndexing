@@ -6,10 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileOwnerAttributeView;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import DataBase.DataBase;
 import DataBase.Table.Table;
@@ -49,7 +46,8 @@ public class SortByFilter {
 			
 			Classify classify = new Classify(filters, file);
 			System.out.println(classify.GetTableNameByFilters());
-			addToTable(classify.GetTableNameByFilters(), new String[]{file,"J"});
+			Random r = new Random();
+			addToTable(classify.GetTableNameByFilters(), new String[]{file, String.valueOf((char)(r.nextInt(26) + 'a'))});
 		}
 //		for (String file : this.files) {
 //			System.out.println(index);

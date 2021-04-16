@@ -51,7 +51,7 @@ public class ReadTable {
 		int count = getRowCount(column, value);
 		
 		try {
-		ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s'",
+		ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s' ORDER BY score ASC",
 				this.table.getDbName(), column, value.replaceAll("'", "''")));
 		int columnCount = rs.getMetaData().getColumnCount();
 
@@ -98,7 +98,7 @@ public class ReadTable {
 //		ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s'",
 //				this.table.getDbName(), column, value));
 		PreparedStatement ps = this.table.getDataBase().getConnection().prepareStatement(
-				String.format("SELECT * FROM %s WHERE %s LIKE ?",
+				String.format("SELECT * FROM %s WHERE %s LIKE ? ORDER BY score ASC",
 						this.table.getDbName(), column));
 		ps.setString(1, "%" + value + "%");
 		
