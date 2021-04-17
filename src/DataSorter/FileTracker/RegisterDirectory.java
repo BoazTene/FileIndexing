@@ -67,7 +67,7 @@ public class RegisterDirectory {
 
             @Override
             public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                return FileVisitResult.SKIP_SUBTREE;
+                        return FileVisitResult.SKIP_SUBTREE;
             }
 
             @Override
