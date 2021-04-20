@@ -51,7 +51,7 @@ public class WatchDir {
 	/**
 	 * Process all events for keys queued to the watcher
 	 */
-	public void processEvents(Entry entry, Overflow overflow) throws SQLException {
+	public void processEvents(Entry entry, Overflow overflow) throws SQLException, IOException {
 		for (;;) {
 
 			// wait for key to be signalled

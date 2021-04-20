@@ -6,9 +6,7 @@ import java.sql.Statement;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -18,13 +16,10 @@ import java.sql.SQLException;
  *
  */
 public class DataBase {
-	private Path path;
-	private Connection connection;
-	private Statement stmt;
-
-
-
-	private java.nio.file.Path dbPath;
+	private final Path path;
+	private final Connection connection;
+	private final Statement stmt;
+	private final java.nio.file.Path dbPath;
 	
 
 	/**
@@ -39,7 +34,6 @@ public class DataBase {
 	 * @throws SQLException
 	 */
 
-	
 
 	public DataBase (String dbPath) throws SQLException {
 		this.dbPath = Paths.get(dbPath);

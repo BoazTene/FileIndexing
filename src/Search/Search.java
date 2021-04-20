@@ -26,7 +26,7 @@ public class Search implements Runnable{
 		this.filters = filters;
 		Classify classify = new Classify(filters, query);
 		this.tableName = classify.GetTableNameByFilters();
-		this.dataBase = new DataBase("db/FirstLetter.db");
+		this.dataBase = new DataBase("db/DataBase.db");
 		this.query = query;
 		this.table = new Table(this.dataBase, this.tableName, this.columns);
 	}

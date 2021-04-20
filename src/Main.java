@@ -1,47 +1,27 @@
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchEvent.Kind;
-import java.nio.file.attribute.FileOwnerAttributeView;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-
 import DataBase.Table.SortTable;
 import DataSorter.FileTracker.QuickScan.QuickScan;
-import com.sun.security.auth.UserPrincipal;
-
 import DataBase.DataBase;
-import DataBase.Table.ReadTable;
 import DataBase.Table.Table;
-import DataBase.Table.WriteTable;
 import DataSorter.SortByFilter;
-import DataSorter.FileTracker.*;
-import DataSorter.FileTracker.EntryHandlers.Entry;
 import DataSorter.Filters.ExtensionFilter;
 import DataSorter.Filters.Filter;
 import DataSorter.Filters.NameFilter;
 import Search.Search;
-import DataSorter.FileTracker.*;
-import DataSorter.FileTracker.QuickScan.EntryHandler;
-import java.nio.file.WatchEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-import static java.nio.file.StandardWatchEventKinds.*;
 
 public class Main {
+
 	public static boolean isAdmin() {
-	    String groups[] = (new com.sun.security.auth.module.NTSystem()).getGroupIDs();
+	    String[] groups = (new com.sun.security.auth.module.NTSystem()).getGroupIDs();
 	    for (String group : groups) {
 	        if (group.equals("S-1-5-32-544"))
 	            return true;
@@ -55,7 +35,7 @@ public class Main {
 		filters[0] = new NameFilter();
 		filters[1] = new ExtensionFilter();
 //
-//		String path = "db/FirstLetter.db";
+//		String path = "db/DataBase.db";
 //		String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
 
 //		DataBase db = new DataBase(path);
@@ -92,7 +72,7 @@ public class Main {
 //		st.sortBy("score");
 	}
 
-	public static void hardScan(Filter[] filters, String path) throws SQLException {
+	public static void hardScan(Filter[] filters, String path) throws SQLException, IOException {
 		new SortByFilter(filters, path, false);
 	}
 
@@ -139,13 +119,5 @@ public class Main {
 					listf(file.getAbsolutePath(), files);
 				}
 			}
-	}
-}
-
-class Lahoh implements Runnable {
-
-	@Override
-	public void run() {
-		System.out.println("lahoh");
 	}
 }

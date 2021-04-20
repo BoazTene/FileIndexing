@@ -1,5 +1,6 @@
 package DataSorter.FileTracker.EntryHandlers;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.sql.SQLException;
@@ -19,5 +20,5 @@ public interface Entry {
 	 * @param kind - The kind of the event that occured can be: ENTRY_CREATE, ENTRY_MODIFIED, ENTRY_DELETE.
 	 * @param path - The path of the event's file.
 	 */
-	public void newEntry(WatchEvent.Kind kind, Path path) throws SQLException;
+	public void newEntry(WatchEvent.Kind kind, Path path) throws SQLException, IOException;
 }

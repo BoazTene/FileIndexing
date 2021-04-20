@@ -25,13 +25,12 @@ public class NameFilter implements Filter{
 
 	public NameFilter(List<String> filesList) throws SQLException {
 		this.filesList = filesList;
-//		this.dataBase = new DataBase("C:/Users/user/Documents/Projects/FileIndexing/db/FirstLetter.db");
-		this.dataBase = new DataBase("db/FirstLetter.db");
+		this.dataBase = new DataBase("db/DataBase.db");
 
 	}
 	
 	public NameFilter() throws SQLException {
-		this.dataBase = new DataBase("db/FirstLetter.db");
+		this.dataBase = new DataBase("db/DataBase.db");
 	}
 	
 	public void addToTable(String tableName, String[] data) throws SQLException {

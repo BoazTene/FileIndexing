@@ -1,6 +1,7 @@
 package DataSorter;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +14,10 @@ import DataBase.Table.Table;
 import DataBase.Table.WriteTable;
 import DataSorter.Filters.Filter;
 import DataSorter.Filters.NameFilter;
+import Score.Filters.LastModified.LastModified;
+import Score.Filters.Owner.Owner;
+import Score.Filters.ScoreFilter;
+import Score.Score;
 import Search.Classify;
 import Search.Search;
 
@@ -25,18 +30,18 @@ import Search.Search;
 public class SortByFilter {
 	private List<String> files;
 	private DataBase dataBase;
-
+	private static final ScoreFilter[] SCORE_FILTERS = {new LastModified(), new Owner()};
 	private String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
 	private final boolean system;
 
 	
 	
-	public SortByFilter(Filter[] filters, String directoryName, boolean system) throws SQLException {
-		this.dataBase = new DataBase("db/FirstLetter.db");
+	public SortByFilter(Filter[] filters, String directoryName, boolean system) throws SQLException, IOException {
+		this.dataBase = new DataBase("db/DataBase.db");
 		this.system = system;
 		this.files = new ArrayList<>();
 		listf(directoryName);
-		int index = 0	;
+		int index = 0;
 
 		for (int i = index; i < this.files.size(); i++) {
 			String file = this.files.get(i);
@@ -46,16 +51,9 @@ public class SortByFilter {
 			
 			Classify classify = new Classify(filters, file);
 			System.out.println(classify.GetTableNameByFilters());
-			Random r = new Random();
-			addToTable(classify.GetTableNameByFilters(), new String[]{file, String.valueOf((char)(r.nextInt(26) + 'a'))});
+
+			addToTable(classify.GetTableNameByFilters(), new String[]{file, String.valueOf(new Score(SCORE_FILTERS, file).getScore())});
 		}
-//		for (String file : this.files) {
-//			System.out.println(index);
-//			index++;
-//			Classify classify = new Classify(filters, file);
-//			System.out.println(classify.GetTableNameByFilters());
-//			addToTable(classify.GetTableNameByFilters(), new String[]{file});
-//		}
 	}
 	
 	public void addToTable(String tableName, String[] data) throws SQLException {
