@@ -50,9 +50,9 @@ public class ReadTable {
 	public String[][] getByColumn(String column, String value) throws SQLException {
 		int count = getRowCount(column, value);
 		
-		ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s'",
-				this.table.getDbName(), column, value));
-		
+		try {
+		ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s' ORDER BY score ASC",
+				this.table.getDbName(), column, value.replaceAll("'", "''")));
 		int columnCount = rs.getMetaData().getColumnCount();
 
 		String[][] result = new String[count][columnCount];
@@ -65,9 +65,22 @@ public class ReadTable {
 			}
 
 			rs.next();
+			
+			
 		}
-
 		return result;
+		} catch( Exception e) {
+			e.printStackTrace();
+			System.out.println(String.format("SELECT * FROM %s WHERE %s = '%s'",
+				this.table.getDbName(), column, value));
+			ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s'",
+					this.table.getDbName(), column, value));
+			
+			return null;
+		}
+		
+		
+		
 	}
 	
 	
@@ -79,23 +92,26 @@ public class ReadTable {
 	 * @return
 	 * @throws SQLException
 	 */
-	public String[][] getLikeByColumn(String column, String value) throws SQLException {
-		int count = getRowCount(column, value);
+	public String[] getLikeByColumn(String column, String value) throws SQLException {
+		int count = getRowCountLike(column, value);
 		
 //		ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s'",
 //				this.table.getDbName(), column, value));
 		PreparedStatement ps = this.table.getDataBase().getConnection().prepareStatement(
-				String.format("SELECT * FROM %s WHERE %s LIKE ?",
+				String.format("SELECT * FROM %s WHERE %s LIKE ? ORDER BY score ASC",
 						this.table.getDbName(), column));
 		ps.setString(1, "%" + value + "%");
 		
 		ResultSet rs = ps.executeQuery();
 		
+		String[] result = new String[count];
+		int i = 0;
 		while (rs.next()) {
-			System.out.println(rs.getString("value"));
+			result[i] = rs.getString("value");
+			i++;
 		}
 		
-		return null;
+		return result;
 	}
 	
 	/**
@@ -111,8 +127,42 @@ public class ReadTable {
 		ResultSet res;
 		try {
 			res = this.stmt.executeQuery(String.format("SELECT COUNT(*) FROM %s WHERE %s = '%s'",
-					this.table.getDbName(), column, value));
+					this.table.getDbName(), column, value.replaceAll("'", "''")));
 			 while (res.next()){
+	            count = res.getInt(1);
+	        }
+		        
+	        res.close();
+		        
+		} catch (SQLException e) {
+			System.out.println("Column: " + column + " Value: " + value + " Sql: " + String.format("SELECT COUNT(*) FROM %s WHERE %s = '%s'",
+					this.table.getDbName(), column, value));
+			
+			e.printStackTrace();
+		}
+        
+       
+        return count;
+	}
+	
+	/**
+	 * This method return the number of rows that matches a specific condition.
+	 * 
+	 * @param column - The column name.
+	 * @param value - The value of the column name.
+	 * @return 
+	 * @throws SQLException
+	 */
+	private int getRowCountLike(String column, String value)  {
+		int count = 0;
+		ResultSet res;
+		try {
+			PreparedStatement ps = this.table.getDataBase().getConnection().prepareStatement(
+					String.format(String.format("SELECT COUNT(*) FROM %s WHERE %s Like ?",
+							this.table.getDbName(), column)));
+			ps.setString(1, "%" + value + "%");
+			res = ps.executeQuery();
+			while (res.next()){
 	            count = res.getInt(1);
 	        }
 		        

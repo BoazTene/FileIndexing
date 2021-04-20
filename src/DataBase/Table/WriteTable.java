@@ -52,11 +52,19 @@ public class WriteTable {
 		}
 		
 		String sql = String.format("INSERT INTO %s(%s) VALUES (%s)", this.table.getDbName(), columns, values);
-		DataBase db = this.table.getDataBase();
 		
+		DataBase db = this.table.getDataBase();
 		return db.getConnection().prepareStatement(sql);
 	}
-	
+
+	public void deleteRow(String[] sColumn) throws SQLException {
+		String sql =String.format("DELETE FROM %s WHERE %s = ?;", this.table.getDbName(), this.table.getColumns()[0][0]);
+
+		PreparedStatement pstmt = this.table.getDataBase().getConnection().prepareStatement(sql);
+		pstmt.setString(1, sColumn[0]);
+		pstmt.executeUpdate();
+	}
+
 	/**
 	 * This method adds row to the table.
 	 * 
@@ -65,7 +73,6 @@ public class WriteTable {
 	 */
 	public void newRow(String[] sColumn) throws SQLException {
 		ReadTable rt = new ReadTable(this.table.getDataBase(), this.table);
-
 		if (rt.getByColumn(this.table.getColumns()[0][0], sColumn[0]).length != 0 ) {
 	        String sql =String.format("DELETE FROM %s WHERE %s = ?;", this.table.getDbName(), this.table.getColumns()[0][0]);
 

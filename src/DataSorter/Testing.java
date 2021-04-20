@@ -15,78 +15,50 @@ import java.nio.file.WatchService;
 
 
 public class Testing {
+	public static void main(String[] args) {
+		String[][] result = new String[6][];
+		//		result[5][0] = "Hello";
+		//		result[5][1] = "Mate";
+		String extension = "";
+		String fileName = "C:/Users/User/Documents/μιξεγιν/ticTa.ctoe.png";
+		int i = fileName.lastIndexOf('.');
 
-    public static void main(String[] args) throws IOException {
-    	Path dir = Paths.get("C:/Users/user/Documents/Projects/FileIndexing/db");
-    	WatchService watcher = FileSystems.getDefault().newWatchService();
-    	try {
-    	    WatchKey key = dir.register(watcher,
-    	                           ENTRY_CREATE,
-    	                           ENTRY_DELETE);
-    	} catch (IOException x) {
-    	    System.err.println(x);
-    	}
-    	
-    	for (;;) {
+			extension = fileName.substring(i+1);
 
-    	    // wait for key to be signaled
-    	    WatchKey key;
-    	    try {
-    	        key = watcher.take();
-    	    } catch (InterruptedException x) {
-    	        return;
-    	    }
+			System.out.println(extension);
 
-    	    for (WatchEvent<?> event: key.pollEvents()) {
-    	        WatchEvent.Kind<?> kind = event.kind();
-    	        System.out.println(kind);
+		//		MyFile file1 = new MyFile("file", "txt", true);
+		//		MyFile file2 = new MyFile("itay", "png", true);
+		//		MyFile file3 = new MyFile("yossi", "txt", false);
+		//		MyFile file4 = new MyFile("boaz", "png", false);
+		//		MyFile file5 = new MyFile("yoav", "png", false);
+		//		MyFile file6 = new MyFile("beni", "txt", true);
+		//		MyFile file7 = new MyFile("goni", "txt", true);
+		//		MyFile file8 = new MyFile("gilad", "txt", false);
+		//		MyFile file9 = new MyFile("fredy", "png", true);
+		//
+		//		List<MyFile> filesList = new ArrayList<MyFile>();
+		//		filesList.add(file1);
+		//		filesList.add(file2);
+		//		filesList.add(file3);
+		//		filesList.add(file4);
+		//		filesList.add(file5);
+		//		filesList.add(file6);
+		//		filesList.add(file7);
+		//		filesList.add(file8);
+		//		filesList.add(file9);
+		//		Iterator<MyFile> itr = null;
+		//		itr = filesList.iterator();
+		//		List<MyFile> fileNames = new ArrayList<MyFile>();
+		//		List<MyFile>[] alphabet = new List[128];
+		//		while (itr.hasNext()) {
+		//			MyFile thisFile = itr.next();
+		//			char firtLetter = thisFile.getName().charAt(0);
+		//			if (alphabet[firtLetter] == null)
+		//				alphabet[firtLetter] = new ArrayList<MyFile>();
+		//			alphabet[firtLetter].add(thisFile);
+		//		}
+	}
 
-    	        // This key is registered only
-    	        // for ENTRY_CREATE events,
-    	        // but an OVERFLOW event can
-    	        // occur regardless if events
-    	        // are lost or discarded.
-    	        if (kind == OVERFLOW) {
-    	            continue;
-    	        }
-
-    	        // The filename is the
-    	        // context of the event.
-    	        WatchEvent<Path> ev = (WatchEvent<Path>)event;
-    	        Path filename = ev.context();
-    	        System.out.println(filename.getFileName());
-
-    	        // Verify that the new
-    	        //  file is a text file.
-    	        try {
-    	            // Resolve the filename against the directory.
-    	            // If the filename is "test" and the directory is "foo",
-    	            // the resolved name is "test/foo".
-    	            Path child = dir.resolve(filename);
-    	            System.out.println(Files.probeContentType(child));
-    	            if (!Files.probeContentType(child).equals("text/plain")) {
-    	                System.err.format("New file '%s'" +
-    	                    " is not a plain text file.%n", filename);
-    	                continue;
-    	            }
-    	        } catch (Exception x) {
-//    	            System.err.println(x);
-    	            continue;
-    	        }
-
-    	        // Email the file to the
-    	        //  specified email alias.
-    	        System.out.format("Emailing file %s%n", filename);
-    	        //Details left to reader....
-    	    }
-
-    	    // Reset the key -- this step is critical if you want to
-    	    // receive further watch events.  If the key is no longer valid,
-    	    // the directory is inaccessible so exit the loop.
-    	    boolean valid = key.reset();
-    	    if (!valid) {
-    	        break;
-    	    }
-    	}
-    }
 }
+

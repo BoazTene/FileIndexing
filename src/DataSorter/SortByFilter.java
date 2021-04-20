@@ -1,17 +1,23 @@
 package DataSorter;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileOwnerAttributeView;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import DataBase.DataBase;
 import DataBase.Table.Table;
 import DataBase.Table.WriteTable;
 import DataSorter.Filters.Filter;
 import DataSorter.Filters.NameFilter;
+import Score.Filters.LastModified.LastModified;
+import Score.Filters.Owner.Owner;
+import Score.Filters.ScoreFilter;
+import Score.Score;
 import Search.Classify;
 import Search.Search;
 
@@ -23,34 +29,56 @@ import Search.Search;
  */
 public class SortByFilter {
 	private List<String> files;
+	private DataBase dataBase;
+	private static final ScoreFilter[] SCORE_FILTERS = {new LastModified(), new Owner()};
+	private String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
+	private final boolean system;
+
 	
-//	public static void main(String[] args) throws SQLException {
-//		List<String> filesList = new ArrayList<>();		
-//		listf("C:/", filesList);
-//		System.out.println(filesList.size());
-//		Iterator<String> itr = null;
-//		itr = filesList.iterator();
-//		List<MyFile> fileNames = new ArrayList<MyFile>();
-//		
-//		NameFilter nameFilter = new NameFilter(filesList);
-//		nameFilter.addIndex();
-//		
-////		Filter[] filters = new Filter[1];
-////		filters[0] = new NameFilter();
-//		
-////		Search search = new Search("אמ", filters);
-////		search.search();
-////		typeFilter typeFilter = new typeFilter(filesList);
-////		typeFilter.addIndex();
-//		
-//	}
 	
-	public SortByFilter(String directoryName) throws SQLException {
+	public SortByFilter(Filter[] filters, String directoryName, boolean system) throws SQLException, IOException {
+		this.dataBase = new DataBase("db/DataBase.db");
+		this.system = system;
 		this.files = new ArrayList<>();
 		listf(directoryName);
-		
-		NameFilter nameFilter = new NameFilter(this.files);
-		nameFilter.addIndex();
+		int index = 0;
+
+		for (int i = index; i < this.files.size(); i++) {
+			String file = this.files.get(i);
+			
+			System.out.println(index);
+			index++;
+			
+			Classify classify = new Classify(filters, file);
+			System.out.println(classify.GetTableNameByFilters());
+
+			addToTable(classify.GetTableNameByFilters(), new String[]{file, String.valueOf(new Score(SCORE_FILTERS, file).getScore())});
+		}
+	}
+	
+	public void addToTable(String tableName, String[] data) throws SQLException {
+		Table table = new Table(this.dataBase, tableName, this.columns);
+		WriteTable wt = new WriteTable(table);
+		wt.newRow(data);
+	}
+	
+	private String getOwnerName(String filePath) {
+		Path path = Paths.get(filePath);
+		  
+        // Create object having the file attribute
+        FileOwnerAttributeView file = Files.getFileAttributeView(path, 
+                                        FileOwnerAttributeView.class);
+  
+        // Exception Handling to avoid any errors
+        try {
+            // Taking owner name from the file
+            java.nio.file.attribute.UserPrincipal user = file.getOwner();
+  
+            // Printing the owner's name
+            return user.getName().split("\\\\", 2)[1];
+        } catch (Exception e) {
+            return "";
+        }
 	}
 	
 	public void listf(String directoryName) {
@@ -61,6 +89,9 @@ public class SortByFilter {
 	    if(fList != null)
 	        for (File file : fList) {      
 	            if (file.isFile()) {
+	            	if (!this.system & getOwnerName(file.getName()).equals("SYSTEM")) {
+	    				continue;
+	            	}
 	                files.add(file.getPath());
 	            } else if (file.isDirectory()) {
 	            	files.add(file.getPath());
