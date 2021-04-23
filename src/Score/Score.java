@@ -5,8 +5,12 @@ import Score.Filters.ScoreFilter;
 import java.io.IOException;
 
 /**
- * this class sets the score of each file in the data base
- * In the data base the tables will be organized score
+
+ * This class is the main score class.
+ *
+ * The class gets a path to a file and an array of filters and returns the files score.
+ *
+
  */
 public class Score {
 	private final String path;
@@ -29,7 +33,6 @@ public class Score {
 
 		for (ScoreFilter filter : this.scoreFilters) {
 			scoreAverage += getFilterScore(filter);
-			System.out.println(scoreAverage);
 		}
 
 		scoreAverage /= this.scoreFilters.length;

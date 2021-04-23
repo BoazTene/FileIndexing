@@ -19,7 +19,6 @@ import java.util.Arrays;
 
 public class EntryHandler implements Entry {
     private static final ScoreFilter[] SCORE_FILTERS = {new LastModified(), new Owner()};
-    private static final String[][] COLUMNS = {{"value", "text"}, {"score", "text"}};
     private final Filter[] filters;
     private final DataBase dataBase;
     private final String[] unacceptable;
@@ -32,7 +31,7 @@ public class EntryHandler implements Entry {
     }
 
     private void addToTable(String tableName, String[] data) throws SQLException {
-        Table table = new Table(this.dataBase, tableName, COLUMNS);
+        Table table = new Table(this.dataBase, tableName);
         WriteTable wt = new WriteTable(table);
         wt.newRow(data);
     }
@@ -53,7 +52,7 @@ public class EntryHandler implements Entry {
         } else if ("ENTRY_DELETE".equals(kind.toString())) {
             Classify classify = new Classify(filters, path.toAbsolutePath().toString());
 
-            Table table = new Table(this.dataBase, classify.GetTableNameByFilters(), COLUMNS);
+            Table table = new Table(this.dataBase, classify.GetTableNameByFilters());
             WriteTable wt = new WriteTable(table);
             wt.deleteRow(new String[]{path.toAbsolutePath().toString(), String.valueOf(new Score(SCORE_FILTERS, path.toString()).getScore())});
         } else if ("ENTRY_MODIFIED".equals(kind.toString())) {

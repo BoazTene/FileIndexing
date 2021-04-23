@@ -14,24 +14,23 @@ import DataBase.DataBase;
  *
  */
 public class Table {
+	public static String[][] columns = {{"value", "text"}, {"score", "integer"}};
+
 	private DataBase dataBase;
 	private String dbName;
-	private String[][] columns;
-	
+
 	/**
 	 * Class constructor.
 	 * 
 	 * 
 	 * @param dataBase - The dataBase Object.
 	 * @param name - The DataBase name.
-	 * @param columns - String array of each column for example: ["id integer", "name text"]
 	 * @throws SQLException
 	 */
-	public Table(DataBase dataBase, String name, String[][] columns) throws SQLException {
+	public Table(DataBase dataBase, String name) throws SQLException {
 		this.dataBase = dataBase;
 		this.dbName = name;
-		this.columns = columns;
-		
+
 		createTable();
 	}
 	
@@ -45,12 +44,12 @@ public class Table {
 	 * @throws SQLException
 	 */
 	private void createTable() throws SQLException {
-		String sql = String.format("CREATE TABLE IF NOT EXISTS %s (\n", this.dbName);
+		String sql = String.format("CREATE TABLE IF NOT EXISTS %s (\n", dbName);
 		
-		for (int i = 0; i < this.columns.length; i++) {
-			sql += this.columns[i][0] + " " + this.columns[i][1];
+		for (int i = 0; i < columns.length; i++) {
+			sql += columns[i][0] + " " + columns[i][1];
 			
-			if (i+1 < this.columns.length) sql += ",";
+			if (i+1 < columns.length) sql += ",";
 			
 			sql += "\n";
 		}
@@ -65,10 +64,7 @@ public class Table {
 			throw new SQLException("Eror Table 61");
 		}
 	}
-	public void orderByScore() {
-		String.format("SELECT * FROM %s ORDER BY score ASC", this.dbName);
-	}
-	
+
 	public String getDbName() {
 		return dbName;
 	}
@@ -82,7 +78,7 @@ public class Table {
 	}
 
 	public void setColumns(String[][] columns) {
-		this.columns = columns;
+		columns = columns;
 	}
 
 	public DataBase getDataBase() {

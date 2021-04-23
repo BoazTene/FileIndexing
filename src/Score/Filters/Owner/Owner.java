@@ -8,6 +8,11 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * This class is a Score Filter, it will give the file a score bonus if the current user created it.
+ *
+ * @author Boaz Tene
+ */
 public class Owner implements ScoreFilter {
     @Override
     public int getScore(String path) throws IOException {

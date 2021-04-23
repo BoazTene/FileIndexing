@@ -3,7 +3,6 @@ package DataSorter.Filters;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-
 import DataBase.DataBase;
 import DataBase.Table.Table;
 import DataBase.Table.WriteTable;
@@ -19,25 +18,18 @@ import DataBase.Table.WriteTable;
  */
 public class NameFilter implements Filter{
 	private List<String> filesList;
-	private DataBase dataBase;
-	private String[][] columns = {{"value", "text"}, {"score", "integer"}};
-	private final String name = "fl";
+	private final DataBase dataBase;
+	private static final String NAME = "fl";
 
-	// constructor - gets file list and analyzing the properties
-	public NameFilter(List<String> filesList) throws SQLException {
-		this.filesList = filesList;
-		this.dataBase = new DataBase("db/DataBase.db");
-
-	}
 	
 	// Constructor -  which analyzes the properties (the data base)
 	public NameFilter() throws SQLException {
-		this.dataBase = new DataBase("db/DataBase.db");
+		this.dataBase = new DataBase();
 	}
 	
 	// this function gets an table name and an array with the values of all the columns
 	public void addToTable(String tableName, String[] data) throws SQLException {
-		Table table = new Table(this.dataBase, tableName, this.columns);
+		Table table = new Table(this.dataBase, tableName);
 		WriteTable wt = new WriteTable(table);
 		wt.newRow(data);
 	}
@@ -45,15 +37,11 @@ public class NameFilter implements Filter{
 	@Override
 	
 	public void addIndex() throws SQLException {
-		Iterator<String> itr = null;
-		ExtensionFilter extensionFilter;
+		Iterator<String> itr;
 		itr = filesList.iterator();
-		int lahoh = 0;
 		while (itr.hasNext()) {
 			String thisFile = itr.next();
 			String[] data = {thisFile};
-			lahoh++;
-			System.out.println("lahoh: " + lahoh);
 
 			addToTable(classify(thisFile)[0], data);
 		}
@@ -62,7 +50,10 @@ public class NameFilter implements Filter{
 
 
 
+
 	// this function gets an char and arrays of chars, it returns the index of the char in the array
+
+
 	public int getIndexOf(char toSearch, char[] tab ) {
 	  for( int i=0; i< tab.length ; i ++ )
 	    if( tab[ i ] == toSearch)
@@ -122,10 +113,7 @@ public class NameFilter implements Filter{
 				"apostrophe",
 				"ellipsis"
 		};
-		
-		
-		
-		
+
 		try {
 			return values[getIndexOf(chr, unacceptableChars)];
 		} catch (Exception e) {
@@ -154,12 +142,13 @@ public class NameFilter implements Filter{
 			result = (String) numberToStringNumber(firstChar);
 		}
 
-		
-		if (result == "none") {
+
+		if (result.equals("none")) {
+
 			result = String.valueOf(firstChar);
 		} 
 		
-		return new String[]{result, "fl"};
+		return new String[]{result, NAME};
 	}
 	// this function gets an array of chars and a char, it returns if the given char is in the given array
 	private boolean charContains(char[] array, char target) {
@@ -173,7 +162,6 @@ public class NameFilter implements Filter{
 	@Override
 	// this function returns the name of the filter
 	public String getName() {
-		// TODO Auto-generated method stub
-		return this.name;
+		return NAME;
 	}
 }

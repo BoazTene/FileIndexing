@@ -1,13 +1,7 @@
 package DataBase;
 
 import java.nio.file.Paths;
-import java.sql.Statement;
-
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * This class represents a database.
@@ -16,11 +10,10 @@ import java.sql.SQLException;
  *
  */
 public class DataBase {
+	public static final String dbPath = "db/DataBase.db";
 	private final Path path;
 	private final Connection connection;
 	private final Statement stmt;
-	private final java.nio.file.Path dbPath;
-	
 
 	/**
 	 * Class constructor.
@@ -29,26 +22,19 @@ public class DataBase {
 	 * 
 	 * Creates/connects to the database and save the connection to the connection
 	 * field.
-	 * 
-	 * @param dbPath - The path to the DataBase.
+	 *
 	 * @throws SQLException
 	 */
-
-
-	public DataBase (String dbPath) throws SQLException {
-		this.dbPath = Paths.get(dbPath);
-
+	public DataBase () throws SQLException {
 		this.path = new Path(dbPath);
 
-		if (isDataBaseExists()) {
-			this.connection = connectToDb();
-		} else {
-			this.connection = createDb();
-		}
+
+		this.connection = createDb();
 
 		this.stmt = this.connection.createStatement();
 	}
 
+	// this function returns all the tabeles's names
 	public String[] getTables() throws SQLException {
 		DatabaseMetaData metaData = this.connection.getMetaData();
 		String[] types = { "TABLE" };
@@ -73,17 +59,6 @@ public class DataBase {
 		return result;
 	}
 
-
-	/**
-	 * This method connects to existing DataBase.
-	 * 
-	 * @return - The connection to the DataBase
-	 * @throws SQLException
-	 */
-	private Connection connectToDb() throws SQLException {
-		return new ConnectDataBase(this.path.getDbPath()).getConnection();
-	}
-
 	/**
 	 * This method creates + connect to non-existing DataBase.
 	 * 
@@ -91,7 +66,7 @@ public class DataBase {
 	 * @throws SQLException
 	 */
 	private Connection createDb() throws SQLException {
-		return new CreateDataBase(this.path.getDbPath()).getConnection();
+		return DriverManager.getConnection(this.path.getDbURl());
 	}
 
 	/**
@@ -101,24 +76,17 @@ public class DataBase {
 	 * @throws SQLException
 	 */
 	public void execute(String sql) throws SQLException {
-			this.stmt.execute(sql);
+		this.stmt.execute(sql);
 
 	}
 
-	/**
-	 * Checks if a database is already exists.
-	 * 
-	 * @return true if database already exists, false if the database isn't exists.
-	 */
-	private boolean isDataBaseExists() {
-		return new File(this.path.getDbPath()).exists();
-	}
-
+	// this function returns the connection
 	public Connection getConnection() {
 		return this.connection;
 	}
 
+	// this function returns the path of the data base
 	public String getPath() {
-		return this.dbPath.toAbsolutePath().toString();
+		return Paths.get(dbPath).toAbsolutePath().toString();
 	}
 }

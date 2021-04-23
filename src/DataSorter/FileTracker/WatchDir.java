@@ -21,15 +21,23 @@ public class WatchDir {
 		return (WatchEvent<T>) event;
 	}
 
-	public WatchDir(Path dir, Path[] notAllowed) throws IOException {
+	public WatchDir(Path[] dirs, Path[] notAllowed) throws IOException {
 		this.notAllowed = notAllowed;
 		this.watcher = FileSystems.getDefault().newWatchService();
 		this.keys = new HashMap<WatchKey, Path>();
 
-		System.out.format("Scanning %s ...\n", dir);
-		this.registerDirectory = new RegisterDirectory(watcher, keys, dir, notAllowed);
-		this.registerDirectory.registerAll(dir);
+
+		this.registerDirectory = new RegisterDirectory(watcher, keys, notAllowed);
+		for (Path dir : dirs) {
+			System.out.format("Scanning %s ...\n", dir);
+			registerAll(dir);
+		}
+
 		System.out.println("Done.");
+	}
+
+	public void registerAll(Path dir) throws IOException {
+		this.registerDirectory.registerAll(dir);
 	}
 
 	/**

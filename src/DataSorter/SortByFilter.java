@@ -15,64 +15,67 @@ import DataBase.DataBase;
 import DataBase.Table.Table;
 import DataBase.Table.WriteTable;
 import DataSorter.Filters.Filter;
-import DataSorter.Filters.NameFilter;
 import Score.Filters.LastModified.LastModified;
 import Score.Filters.Owner.Owner;
 import Score.Filters.ScoreFilter;
 import Score.Score;
 import Search.Classify;
-import Search.Search;
 
 
 /**
  * 
  * @author Itay Bar Nissim @
+ * this class is used as a thread to sort all the files to the data base
  * 
  */
-public class SortByFilter {
-	private List<String> files;
-	private DataBase dataBase;
+public class SortByFilter extends Thread{
+	private final Filter[] filters;
+	private final List<String> files;
+	private final DataBase dataBase;
 	private static final ScoreFilter[] SCORE_FILTERS = {new LastModified(), new Owner()};
-	private String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
 	private final boolean system;
-	private Filter[] filters;
 
 
-	public SortByFilter(Filter[] filters, String directoryName, boolean system) throws SQLException, IOException {
-		this.dataBase = new DataBase("db/DataBase.db");
+
+// constructor - gets array of filters, and a if it wants to use files that were created by the system and analyzes the properties 
+	public SortByFilter(Filter[] filters, boolean system) throws SQLException {
+		this.dataBase = new DataBase();
 		this.system = system;
 		this.files = new ArrayList<>();
 		this.filters = filters;
-		listf(directoryName);
-		sortToDataBase();
-
-
 	}
 
-	public void sortToDataBase() throws SQLException, IOException {
+	// this function sort all the files to the data base
+	private void sort() throws IOException, SQLException {
+		File[] drivers = File.listRoots();
+		assert drivers != null && drivers.length > 0;
+		for (File driver : drivers) {
+			listf(driver.getAbsolutePath());
+		}
+
+
 		int index = 0;
 
 		for (int i = index; i < this.files.size(); i++) {
 
 			String file = this.files.get(i);
 
-			System.out.println(index);
-			index++;
+
 
 			Classify classify = new Classify(filters, file);
-			System.out.println(classify.GetTableNameByFilters());
-
 			addToTable(classify.GetTableNameByFilters(), new String[]{file, String.valueOf(new Score(SCORE_FILTERS, file).getScore())});
+
+			index++;
 		}
 	}
-
-
+// this function gets table name and array which includes all the names of the tables
+// this function add each file to the right table
 	public void addToTable(String tableName, String[] data) throws SQLException {
-		Table table = new Table(this.dataBase, tableName, this.columns);
+		Table table = new Table(this.dataBase, tableName);
 		WriteTable wt = new WriteTable(table);
 		wt.newRow(data);
 	}
-
+// this function return the name of the owner of the computer
 	private String getOwnerName(String filePath) {
 		Path path = Paths.get(filePath);
 
@@ -92,13 +95,23 @@ public class SortByFilter {
 		}
 	}
 
+// this function is used to run the class as a thread
+	public void run() {
+		try {
+			this.sort();
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+// this function gets a directory to add all the files to a list from
 	public void listf(String directoryName) {
-		File directory = new File(directoryName);
+	    File directory = new File(directoryName);
 
-		// Get all files from a directory.
-		File[] fList = directory.listFiles();
-		if(fList != null)
-			for (File file : fList) {      
+	    // Get all files from a directory.
+	    File[] fList = directory.listFiles();
+	    if (fList != null) {
+			for (File file : fList) {
+
 				if (file.isFile()) {
 					if (!this.system & getOwnerName(file.getName()).equals("SYSTEM")) {
 						continue;
@@ -109,5 +122,8 @@ public class SortByFilter {
 					listf(file.getAbsolutePath());
 				}
 			}
-	}
+
+		}
+    }
+
 }

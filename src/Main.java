@@ -37,58 +37,37 @@ public class Main {
 		Filter[] filters = new Filter[2];
 		filters[0] = new NameFilter();
 		filters[1] = new ExtensionFilter();
-//
 		String path = "db/DataBase.db";
-//		String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
 
-//		DataBase db = new DataBase(path);
-//		Table table = new Table(db, "flaextjs", columns);
-//		ReadTable rt = new ReadTable(db, table);
-//		String[][] result = rt.getByColumn("'1'",  "1");
-//		System.out.println(Arrays.deepToString(result));
-		
-		Path[] notAllowed = {Paths.get("C:\\Users\\user\\Documents\\Projects\\FileIndexing\\test")};
-		File[] drives = File.listRoots();
-		if (drives != null && drives.length > 0) {
-		    for (int i =0; i<drives.length ; i++) {
-		    	//hardScan(filters, drives[i].getPath());
-		    	System.out.println(drives[i].getPath());
-		    }
-		}
-		
 
-//		    System.out.println("Description: "+fsv.getSystemTypeDescription(path));
-		}
-
-//		hardScan(filters, "C:\\Users\\User\\Documents\\לימודים");
-//		quickScan(filters, path, "C:/Users", notAllowed);
+		hardScan(filters);
+//		quickScan(filters);
+//
 //		search(filters);
-//	}
 
-	//
-	public static void quickScan(Filter[] filters, String path, String dir, Path[] notAllowed) throws SQLException, IOException {
-		QuickScan quickScan = new QuickScan(filters,path, dir, notAllowed);
+	}
+
+	public static void quickScan(Filter[] filters) throws SQLException, IOException {
+		QuickScan quickScan = new QuickScan(filters);
+
 		quickScan.start();
 	}
 
-	public static void sortTable(String tableName, String path) throws SQLException {
-		String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
-		DataBase dataBase = new DataBase(path);
-		Table table = new Table(dataBase, tableName, columns);
+	public static void sortTable(String tableName) throws SQLException {
+		DataBase dataBase = new DataBase();
+		Table table = new Table(dataBase, tableName);
 		SortTable st = new SortTable(dataBase, table);
 		st.sortBy("score");
 	}
 
 	public static void sortAllTable(String path) throws SQLException {
-		String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
-		DataBase dataBase = new DataBase(path);
+		DataBase dataBase = new DataBase();
 		SortTable st = new SortTable(dataBase);
 		st.sortAll();
-//		st.sortBy("score");
 	}
 
-	public static void hardScan(Filter[] filters, String path) throws SQLException, IOException {
-		new SortByFilter(filters, path, false);
+	public static void hardScan(Filter[] filters) throws SQLException {
+		new SortByFilter(filters, false).start();
 	}
 
 	public static void search(Filter[] filters) throws SQLException {
@@ -110,7 +89,7 @@ public class Main {
 			executor.submit(task);
 			while (!task.isDone()) {
 				String result = search.getLastResult();
-				if (!result.equals("")) {
+				if (result!=null && !result.equals("")) {
 					System.out.println(result);
 				}
 			}
