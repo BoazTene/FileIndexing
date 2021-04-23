@@ -18,15 +18,13 @@ import java.util.Map;
  *
  */
 public class RegisterDirectory {
-	private Path startPath;
 	private final WatchService watcher;
     private final Map<WatchKey,Path> keys;
     private boolean trace = true;
     private Path[] notAllowed;
     		
-	public RegisterDirectory(WatchService watcher, Map<WatchKey,Path> keys, Path startPath, Path[] notAllowed) {
+	public RegisterDirectory(WatchService watcher, Map<WatchKey,Path> keys, Path[] notAllowed) {
 		this.notAllowed = notAllowed;
-	    this.startPath = startPath;
 		this.watcher = watcher;
 		this.keys = keys;
 	}

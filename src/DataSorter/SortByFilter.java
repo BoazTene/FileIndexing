@@ -13,13 +13,11 @@ import DataBase.DataBase;
 import DataBase.Table.Table;
 import DataBase.Table.WriteTable;
 import DataSorter.Filters.Filter;
-import DataSorter.Filters.NameFilter;
 import Score.Filters.LastModified.LastModified;
 import Score.Filters.Owner.Owner;
 import Score.Filters.ScoreFilter;
 import Score.Score;
 import Search.Classify;
-import Search.Search;
 
 
 /**
@@ -27,37 +25,41 @@ import Search.Search;
  * @author Itay Bar Nissim @
  * 
  */
-public class SortByFilter {
-	private List<String> files;
-	private DataBase dataBase;
+public class SortByFilter extends Thread{
+	private final Filter[] filters;
+	private final List<String> files;
+	private final DataBase dataBase;
 	private static final ScoreFilter[] SCORE_FILTERS = {new LastModified(), new Owner()};
-	private String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
 	private final boolean system;
 
-	
-	
-	public SortByFilter(Filter[] filters, String directoryName, boolean system) throws SQLException, IOException {
-		this.dataBase = new DataBase("db/DataBase.db");
+	public SortByFilter(Filter[] filters, boolean system) throws SQLException {
+		this.dataBase = new DataBase();
 		this.system = system;
 		this.files = new ArrayList<>();
-		listf(directoryName);
+		this.filters = filters;
+	}
+
+	private void sort() throws IOException, SQLException {
+		File[] drivers = File.listRoots();
+		assert drivers != null && drivers.length > 0;
+		for (File driver : drivers) {
+			listf(driver.getAbsolutePath());
+		}
+
 		int index = 0;
 
 		for (int i = index; i < this.files.size(); i++) {
 			String file = this.files.get(i);
-			
-			System.out.println(index);
-			index++;
-			
-			Classify classify = new Classify(filters, file);
-			System.out.println(classify.GetTableNameByFilters());
 
+			Classify classify = new Classify(filters, file);
 			addToTable(classify.GetTableNameByFilters(), new String[]{file, String.valueOf(new Score(SCORE_FILTERS, file).getScore())});
+
+			index++;
 		}
 	}
 	
 	public void addToTable(String tableName, String[] data) throws SQLException {
-		Table table = new Table(this.dataBase, tableName, this.columns);
+		Table table = new Table(this.dataBase, tableName);
 		WriteTable wt = new WriteTable(table);
 		wt.newRow(data);
 	}
@@ -80,23 +82,32 @@ public class SortByFilter {
             return "";
         }
 	}
-	
+
+	public void run() {
+		try {
+			this.sort();
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void listf(String directoryName) {
 	    File directory = new File(directoryName);
 
 	    // Get all files from a directory.
 	    File[] fList = directory.listFiles();
-	    if(fList != null)
-	        for (File file : fList) {      
-	            if (file.isFile()) {
-	            	if (!this.system & getOwnerName(file.getName()).equals("SYSTEM")) {
-	    				continue;
-	            	}
-	                files.add(file.getPath());
-	            } else if (file.isDirectory()) {
-	            	files.add(file.getPath());
-	                listf(file.getAbsolutePath());
-	            }
-	        }
+	    if (fList != null) {
+			for (File file : fList) {
+				if (file.isFile()) {
+					if (!this.system & getOwnerName(file.getName()).equals("SYSTEM")) {
+						continue;
+					}
+					files.add(file.getPath());
+				} else if (file.isDirectory()) {
+					files.add(file.getPath());
+					listf(file.getAbsolutePath());
+				}
+			}
+		}
     }
 }

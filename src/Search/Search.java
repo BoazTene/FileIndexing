@@ -17,7 +17,6 @@ public class Search implements Runnable{
 	private DataBase dataBase;
 	private Table table;
 	private String query;
-	private String[][] columns = {{"value", "text"}, {"score", "integer"}};
 	private Filter[] filters;
 	private List<String> result;
 
@@ -26,9 +25,9 @@ public class Search implements Runnable{
 		this.filters = filters;
 		Classify classify = new Classify(filters, query);
 		this.tableName = classify.GetTableNameByFilters();
-		this.dataBase = new DataBase("db/DataBase.db");
+		this.dataBase = new DataBase();
 		this.query = query;
-		this.table = new Table(this.dataBase, this.tableName, this.columns);
+		this.table = new Table(this.dataBase, this.tableName);
 	}
 	
 	
@@ -56,7 +55,7 @@ public class Search implements Runnable{
 		for (int i = 0; i < tables.length; i++) {
 			try {
 				if (tables[i].contains(this.tableName) || tables[i].contains(this.tableName.split("ext")[1]) ) {
-					Table table = new Table(this.dataBase, tables[i], this.columns);
+					Table table = new Table(this.dataBase, tables[i]);
 					ReadTable rt  = new ReadTable(this.dataBase, table);
 					this.result.addAll(Arrays.asList(rt.getLikeByColumn("value", this.query)));
 				}

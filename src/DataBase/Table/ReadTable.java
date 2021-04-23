@@ -1,15 +1,9 @@
 package DataBase.Table;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import DataBase.DataBase;
 
 
@@ -20,9 +14,8 @@ import DataBase.DataBase;
  *
  */
 public class ReadTable {
-	private DataBase db;
-	private Statement stmt;
-	private Table table;
+	private final Statement stmt;
+	private final Table table;
 	
 	/**
 	 * This is class constructor.
@@ -34,9 +27,8 @@ public class ReadTable {
 	 * @throws SQLException
 	 */
 	public ReadTable(DataBase db, Table table) throws SQLException {
-		this.db = db;
 		this.table = table;
-		this.stmt = this.db.getConnection().createStatement();
+		this.stmt = db.getConnection().createStatement();
 	}
 	
 	/**
@@ -79,10 +71,7 @@ public class ReadTable {
 			return null;
 		}
 		
-		
-		
 	}
-	
 	
 	/**
 	 * This method returns an array of every row that matches the given conditon.
@@ -94,9 +83,7 @@ public class ReadTable {
 	 */
 	public String[] getLikeByColumn(String column, String value) throws SQLException {
 		int count = getRowCountLike(column, value);
-		
-//		ResultSet rs = this.stmt.executeQuery(String.format("SELECT * FROM %s WHERE %s = '%s'",
-//				this.table.getDbName(), column, value));
+
 		PreparedStatement ps = this.table.getDataBase().getConnection().prepareStatement(
 				String.format("SELECT * FROM %s WHERE %s LIKE ? ORDER BY score ASC",
 						this.table.getDbName(), column));

@@ -3,7 +3,6 @@ package DataSorter.Filters;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-
 import DataBase.DataBase;
 import DataBase.Table.Table;
 import DataBase.Table.WriteTable;
@@ -19,46 +18,32 @@ import DataBase.Table.WriteTable;
  */
 public class NameFilter implements Filter{
 	private List<String> filesList;
-	private DataBase dataBase;
-	private String[][] columns = {{"value", "text"}, {"score", "integer"}};
-	private final String name = "fl";
-
-	public NameFilter(List<String> filesList) throws SQLException {
-		this.filesList = filesList;
-		this.dataBase = new DataBase("db/DataBase.db");
-
-	}
+	private final DataBase dataBase;
+	private static final String NAME = "fl";
 	
 	public NameFilter() throws SQLException {
-		this.dataBase = new DataBase("db/DataBase.db");
+		this.dataBase = new DataBase();
 	}
 	
 	public void addToTable(String tableName, String[] data) throws SQLException {
-		Table table = new Table(this.dataBase, tableName, this.columns);
+		Table table = new Table(this.dataBase, tableName);
 		WriteTable wt = new WriteTable(table);
 		wt.newRow(data);
 	}
 	
 	@Override
 	public void addIndex() throws SQLException {
-		Iterator<String> itr = null;
-		ExtensionFilter extensionFilter;
+		Iterator<String> itr;
 		itr = filesList.iterator();
-		int lahoh = 0;
 		while (itr.hasNext()) {
 			String thisFile = itr.next();
 			String[] data = {thisFile};
-			lahoh++;
-			System.out.println("lahoh: " + lahoh);
 
 			addToTable(classify(thisFile)[0], data);
 		}
 
 	}
 
-
-
-	
 	public int getIndexOf(char toSearch, char[] tab ) {
 	  for( int i=0; i< tab.length ; i ++ )
 	    if( tab[ i ] == toSearch)
@@ -117,10 +102,7 @@ public class NameFilter implements Filter{
 				"apostrophe",
 				"ellipsis"
 		};
-		
-		
-		
-		
+
 		try {
 			return values[getIndexOf(chr, unacceptableChars)];
 		} catch (Exception e) {
@@ -148,22 +130,12 @@ public class NameFilter implements Filter{
 		if(charContains(unacceptableChars, firstChar)) {
 			result = (String) numberToStringNumber(firstChar);
 		}
-//		int index = 1;
-//		while (charContains(unacceptableChars, firstChar)) {
-//			try {
-//				firstChar = query.substring(query.lastIndexOf("\\")+1).charAt(index);
-//			} catch (Exception e) {
-//				result = numberToStringNumber(firstChar);
-//				break;
-//			}
-//			index++;
-//		}
-		
-		if (result == "none") {
+
+		if (result.equals("none")) {
 			result = String.valueOf(firstChar);
 		} 
 		
-		return new String[]{result, "fl"};
+		return new String[]{result, NAME};
 	}
 	
 	private boolean charContains(char[] array, char target) {
@@ -176,7 +148,6 @@ public class NameFilter implements Filter{
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return this.name;
+		return NAME;
 	}
 }

@@ -12,8 +12,6 @@ public class SortTable {
     private PreparedStatement pstmt;
     private DataBase db;
     private Statement stmt;
-    private String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
-
 
     public SortTable(DataBase db, Table table) throws SQLException {
          this.db = db;
@@ -63,7 +61,7 @@ public class SortTable {
         for (String t: tables) {
             index++;
             System.out.println(t);
-            Table table = new Table(this.db, t, this.columns);
+            Table table = new Table(this.db, t);
             sortBy(table, "score");
         }
     }

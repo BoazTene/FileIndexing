@@ -11,8 +11,7 @@ package DataBase;
  */
 public class Path {
 	private String dbPath;
-	private String dbURl;
-	private final String JDBC_URL = "jdbc:sqlite:";
+	private static final String JDBC_URL_FORMAT = "jdbc:sqlite:";
 
 	/**
 	 * Class constructor.
@@ -21,8 +20,7 @@ public class Path {
 	 */
 	public Path(String filePath) {
 		this.dbPath = filePath;
-		
-		setDbURL();
+
 	}
 	
 	public String getDbPath() {
@@ -34,10 +32,6 @@ public class Path {
 	}
 
 	public String getDbURl() {
-		return dbURl;
-	}
-
-	private void setDbURL() {
-		this.dbURl = this.JDBC_URL + getDbPath();
+		return JDBC_URL_FORMAT + getDbPath();
 	}
 }
