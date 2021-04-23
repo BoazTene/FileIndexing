@@ -4,24 +4,41 @@ import DataBase.DataBase;
 import DataSorter.FileTracker.EntryHandlers.*;
 import DataSorter.FileTracker.WatchDir;
 import DataSorter.Filters.Filter;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 
-public class QuickScan {
-    private final Entry entry;
-    private final Overflow overflow;
-    private final WatchDir watchDir;
+public class QuickScan extends Thread {
+    private final Path dir;
+    private Entry entry;
+    private Overflow overflow;
+    private WatchDir watchDir;
+    private DataBase dataBase;
+    private Filter[] filters;
 
     public QuickScan(Filter[] filters, String dbName, String dir, Path[] notAllowed) throws IOException, SQLException {
-        Path dir1 = Paths.get(dir);
-        this.entry = new EntryHandler(new DataBase(dbName), filters);
+        this.dataBase = new DataBase(dbName);
+        this.filters = filters;
+        this.dir = Paths.get(dir);
+        this.entry = new EntryHandler(this.dataBase, filters);
         this.overflow = new OverFlowHandler();
-        this.watchDir = new WatchDir(dir1, notAllowed);
+        this.watchDir = new WatchDir(this.dir, notAllowed);
     }
 
-    public void start() throws SQLException, IOException {
-        this.watchDir.processEvents(this.entry, this.overflow);
+    public void run() {
+
+			try {
+				this.watchDir.processEvents(this.entry, this.overflow);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
     }
 }
+
