@@ -10,13 +10,18 @@ import Score.Filters.Owner.Owner;
 import Score.Filters.ScoreFilter;
 import Score.Score;
 import Search.Classify;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.WatchEvent;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+
+/**
+ * This Class is the EntryHandler, for the quickscan. Basically This class handles modified create and detelete events.
+ *
+ * @author Boaz Tene
+ */
 public class EntryHandler implements Entry {
     private static final ScoreFilter[] SCORE_FILTERS = {new LastModified(), new Owner()};
     private final Filter[] filters;

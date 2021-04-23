@@ -3,10 +3,7 @@ package Score.Filters.Owner;
 import Score.Filters.ScoreFilter;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 
 /**
  * This class is a Score Filter, it will give the file a score bonus if the current user created it.
@@ -26,7 +23,7 @@ public class Owner implements ScoreFilter {
     private String getFileOwner(Path path) throws IOException {
         try {
             return Files.getOwner(path).getName().split("\\\\")[1];
-        } catch (NoSuchFileException e) {
+        } catch (NoSuchFileException | AccessDeniedException e) {
           return "";
         } catch (Exception e) {
             return Files.getOwner(path).getName();

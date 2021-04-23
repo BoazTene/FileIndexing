@@ -16,18 +16,34 @@ public class Score {
 	private final String path;
 	private final ScoreFilter[] scoreFilters;
 
-	// constructor - gets the filter which the score is based on, and a file path
+	/**
+	 *  constructor - gets the filter which the score is based on, and a file path
+	 *
+	 * @param scoreFilters
+	 * @param path
+	 */
 	public Score(ScoreFilter[] scoreFilters, String path) {
 		this.path = path;
 		this.scoreFilters = scoreFilters;
 	}
 
-	// returns the score in the given filter
+	/**
+	 * returns the score in the given filter
+	 *
+	 * @param filter
+	 * @return
+	 * @throws IOException
+	 */
 	private int getFilterScore(ScoreFilter filter) throws IOException {
 		return filter.getScore(this.path);
 	}
 
-	// this function calculate the score (with consideration in the calculated score from each filter) , and returns it
+	/**
+	 * this function calculate the score (with consideration in the calculated score from each filter) , and returns it
+	 *
+	 * @return
+	 * @throws IOException
+	 */
 	public int getScore() throws IOException {
 		int scoreAverage = 0;
 

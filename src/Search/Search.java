@@ -1,9 +1,6 @@
 package Search;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,31 +9,47 @@ import DataBase.Table.ReadTable;
 import DataBase.Table.Table;
 import DataSorter.Filters.Filter;
 
-public class Search implements Runnable{
-	private String tableName;
-	private DataBase dataBase;
-	private Table table;
-	private String query;
-	private Filter[] filters;
-	private List<String> result;
 
-	// constructor - gets filters to search with, and a query
-	// it also analyzing the needed properties
+/**
+ * This class is the main Search class.
+ * The class can search through the entire database a file.
+ *
+ * @author Boaz Tene
+ */
+public class Search implements Runnable {
+	private final String tableName;
+	private final DataBase dataBase;
+	private final Table table;
+	private final String query;
+	private final List<String> result;
+
+
+	/**
+	 * constructor - gets filters to search with, and a query
+	 * it also analyzing the needed properties.
+	 *
+	 * @param filters
+	 * @param query
+	 * @throws SQLException
+	 */
 	public Search(Filter[] filters, String query) throws SQLException {
 		this.result = new ArrayList<>();
-		this.filters = filters;
 		Classify classify = new Classify(filters, query);
 		this.tableName = classify.GetTableNameByFilters();
 		this.dataBase = new DataBase();
 		this.query = query;
 		this.table = new Table(this.dataBase, this.tableName);
 	}
-	
-	// this function searches by the given query in the tables which have a match to it, it returns array of results
+
+	/**
+	 * this function searches by the given query in the tables which have a match to it, it returns array of results
+	 *
+	 * @return
+	 * @throws SQLException
+	 */
 	public String[] search() throws SQLException {
 		ReadTable rt  = new ReadTable(this.dataBase, this.table);
 
-		
 //		if (this.tableName.split(this.filters[this.filters.length-1].getName(), 2)[1].equals("")) {
 		List<String> results = new ArrayList<String>(Arrays.asList(rt.getLikeByColumn("value", this.query)));
 		List<String> temp = Arrays.asList(searchLikeTables());
@@ -49,8 +62,13 @@ public class Search implements Runnable{
 
 		return results.toArray(new String[0]);
 	}
-	
-	// this function is used to search in tables that are potentially could have a match to the query
+
+	/**
+	 * this function is used to search in tables that are potentially could have a match to the query
+	 *
+	 * @return
+	 * @throws SQLException
+	 */
 	public String[] searchLikeTables() throws SQLException {
 		System.out.println(this.tableName);
 		String[] tables = this.dataBase.getTables();
@@ -71,8 +89,10 @@ public class Search implements Runnable{
 		return (String[]) this.result.toArray(new String[0]);
 	}
 
+	/**
+	 * this method is used for threading
+	 */
 	@Override
-	// this function is used for threading
 	public void run() {
 		try {
 			search();
@@ -80,7 +100,6 @@ public class Search implements Runnable{
 			throwables.printStackTrace();
 		}
 	}
-
 	
 	public String getLastResult(){
 		try {

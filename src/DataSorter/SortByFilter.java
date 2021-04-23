@@ -36,8 +36,9 @@ public class SortByFilter extends Thread{
 	private final boolean system;
 
 
-
-// constructor - gets array of filters, and a if it wants to use files that were created by the system and analyzes the properties 
+/**
+ * constructor - gets array of filters, and a if it wants to use files that were created by the system and analyzes the properties
+ */
 	public SortByFilter(Filter[] filters, boolean system) throws SQLException {
 		this.dataBase = new DataBase();
 		this.system = system;
@@ -45,7 +46,12 @@ public class SortByFilter extends Thread{
 		this.filters = filters;
 	}
 
-	// this function sort all the files to the data base
+	/**
+	 * this function sort all the files to the data base
+	 *
+	 * @throws IOException
+	 * @throws SQLException
+	 */
 	private void sort() throws IOException, SQLException {
 		File[] drivers = File.listRoots();
 		assert drivers != null && drivers.length > 0;
@@ -68,19 +74,32 @@ public class SortByFilter extends Thread{
 			index++;
 		}
 	}
-// this function gets table name and array which includes all the names of the tables
-// this function add each file to the right table
+
+	/**
+	 * this method gets table name and array which includes all the names of the tables
+	 * this method add each file to the right table
+	 *
+	 * @param tableName
+	 * @param data
+	 * @throws SQLException
+	 */
 	public void addToTable(String tableName, String[] data) throws SQLException {
 		Table table = new Table(this.dataBase, tableName);
 		WriteTable wt = new WriteTable(table);
 		wt.newRow(data);
 	}
-// this function return the name of the owner of the computer
+
+	/**
+	 * this function return the name of the owner of the computer
+	 *
+	 * @param filePath
+	 * @return
+	 */
 	private String getOwnerName(String filePath) {
 		Path path = Paths.get(filePath);
 
 		// Create object having the file attribute
-		FileOwnerAttributeView file = Files.getFileAttributeView(path, 
+		FileOwnerAttributeView file = Files.getFileAttributeView(path,
 				FileOwnerAttributeView.class);
 
 		// Exception Handling to avoid any errors
@@ -95,7 +114,9 @@ public class SortByFilter extends Thread{
 		}
 	}
 
-// this function is used to run the class as a thread
+	/**
+	 * this function is used to run the class as a thread
+	 */
 	public void run() {
 		try {
 			this.sort();
@@ -103,13 +124,19 @@ public class SortByFilter extends Thread{
 			e.printStackTrace();
 		}
 	}
-// this function gets a directory to add all the files to a list from
-	public void listf(String directoryName) {
-	    File directory = new File(directoryName);
 
-	    // Get all files from a directory.
-	    File[] fList = directory.listFiles();
-	    if (fList != null) {
+
+	/**
+	 * this function gets a directory to add all the files to a list from
+	 *
+	 * @param directoryName
+	 */
+	public void listf(String directoryName) {
+		File directory = new File(directoryName);
+
+		// Get all files from a directory.
+		File[] fList = directory.listFiles();
+		if (fList != null) {
 			for (File file : fList) {
 
 				if (file.isFile()) {
@@ -124,6 +151,5 @@ public class SortByFilter extends Thread{
 			}
 
 		}
-    }
-
+	}
 }

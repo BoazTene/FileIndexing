@@ -15,14 +15,24 @@ import java.util.Date;
  * @author Boaz Tene
  */
 public class LastModified implements ScoreFilter {
-	// this function returns the last time the file was modified
+    /**
+     * this function returns the last time the file was modified
+     *
+     * @param path
+     * @return
+     */
     private double getLastModified(Path path) {
         return new BigDecimal(new Date().getTime() - path.toFile().lastModified())
                 .divide(new BigDecimal(2629743833L), MathContext.DECIMAL128).doubleValue();
     }
 
+    /**
+     * this function gets the score by the last time the file was modified
+     *
+     * @param path
+     * @return
+     */
     @Override
-    // this function gets the score by the last time the file was modified
     public int getScore(String path) {
         return (int) Math.round(LastModifiedFunction.F(getLastModified(Paths.get(path))));
     }
