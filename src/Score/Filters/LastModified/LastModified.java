@@ -10,12 +10,14 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 public class LastModified implements ScoreFilter {
+	// this function returns the last time the file was modified
     private double getLastModified(Path path) {
         return new BigDecimal(new Date().getTime() - path.toFile().lastModified())
                 .divide(new BigDecimal(2629743833L), MathContext.DECIMAL128).doubleValue();
     }
 
     @Override
+    // this function gets the score by the last time the file was modified
     public int getScore(String path) {
         return (int) Math.round(new Function().F(getLastModified(Paths.get(path))));
     }

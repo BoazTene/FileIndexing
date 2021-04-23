@@ -23,16 +23,19 @@ public class NameFilter implements Filter{
 	private String[][] columns = {{"value", "text"}, {"score", "integer"}};
 	private final String name = "fl";
 
+	// constructor - gets file list and analyzing the properties
 	public NameFilter(List<String> filesList) throws SQLException {
 		this.filesList = filesList;
 		this.dataBase = new DataBase("db/DataBase.db");
 
 	}
 	
+	// Constructor -  which analyzes the properties (the data base)
 	public NameFilter() throws SQLException {
 		this.dataBase = new DataBase("db/DataBase.db");
 	}
 	
+	// this function gets an table name and an array with the values of all the columns
 	public void addToTable(String tableName, String[] data) throws SQLException {
 		Table table = new Table(this.dataBase, tableName, this.columns);
 		WriteTable wt = new WriteTable(table);
@@ -40,6 +43,7 @@ public class NameFilter implements Filter{
 	}
 	
 	@Override
+	
 	public void addIndex() throws SQLException {
 		Iterator<String> itr = null;
 		ExtensionFilter extensionFilter;
@@ -58,7 +62,7 @@ public class NameFilter implements Filter{
 
 
 
-	
+	// this function gets an char and arrays of chars, it returns the index of the char in the array
 	public int getIndexOf(char toSearch, char[] tab ) {
 	  for( int i=0; i< tab.length ; i ++ )
 	    if( tab[ i ] == toSearch)
@@ -67,6 +71,7 @@ public class NameFilter implements Filter{
 	  return 0;
 	}
 	
+	// this function gets a char, and returns its name (in words)
 	public String numberToStringNumber(char chr) {
 		final char[] unacceptableChars = {
 				'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -148,16 +153,7 @@ public class NameFilter implements Filter{
 		if(charContains(unacceptableChars, firstChar)) {
 			result = (String) numberToStringNumber(firstChar);
 		}
-//		int index = 1;
-//		while (charContains(unacceptableChars, firstChar)) {
-//			try {
-//				firstChar = query.substring(query.lastIndexOf("\\")+1).charAt(index);
-//			} catch (Exception e) {
-//				result = numberToStringNumber(firstChar);
-//				break;
-//			}
-//			index++;
-//		}
+
 		
 		if (result == "none") {
 			result = String.valueOf(firstChar);
@@ -165,7 +161,7 @@ public class NameFilter implements Filter{
 		
 		return new String[]{result, "fl"};
 	}
-	
+	// this function gets an array of chars and a char, it returns if the given char is in the given array
 	private boolean charContains(char[] array, char target) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == target) return true;
@@ -175,6 +171,7 @@ public class NameFilter implements Filter{
 	}
 
 	@Override
+	// this function returns the name of the filter
 	public String getName() {
 		// TODO Auto-generated method stub
 		return this.name;

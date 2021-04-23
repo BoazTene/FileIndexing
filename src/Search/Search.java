@@ -21,6 +21,8 @@ public class Search implements Runnable{
 	private Filter[] filters;
 	private List<String> result;
 
+	// constructor - gets filters to search with, and a query
+	// it also analyzing the needed properties
 	public Search(Filter[] filters, String query) throws SQLException {
 		this.result = new ArrayList<>();
 		this.filters = filters;
@@ -31,7 +33,7 @@ public class Search implements Runnable{
 		this.table = new Table(this.dataBase, this.tableName, this.columns);
 	}
 	
-	
+	// this function searches by the given query in the tables which have a match to it, it returns array of results
 	public String[] search() throws SQLException {
 		ReadTable rt  = new ReadTable(this.dataBase, this.table);
 
@@ -49,6 +51,7 @@ public class Search implements Runnable{
 		return results.toArray(new String[0]);
 	}
 	
+	// this function is used to search in tables that are potentially could have a match to the query
 	public String[] searchLikeTables() throws SQLException {
 		System.out.println(this.tableName);
 		String[] tables = this.dataBase.getTables();
@@ -70,6 +73,7 @@ public class Search implements Runnable{
 	}
 
 	@Override
+	// this function is used for threading
 	public void run() {
 		try {
 			search();
@@ -78,6 +82,7 @@ public class Search implements Runnable{
 		}
 	}
 
+	
 	public String getLastResult(){
 		try {
 			String result = this.result.get(0);

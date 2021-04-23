@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +17,8 @@ import Search.Search;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+
+import javax.swing.filechooser.FileSystemView;
 
 
 public class Main {
@@ -35,7 +38,7 @@ public class Main {
 		filters[0] = new NameFilter();
 		filters[1] = new ExtensionFilter();
 //
-//		String path = "db/DataBase.db";
+		String path = "db/DataBase.db";
 //		String[][] columns = {{"value", "text"}, {"score", "integer"}} ;
 
 //		DataBase db = new DataBase(path);
@@ -43,14 +46,26 @@ public class Main {
 //		ReadTable rt = new ReadTable(db, table);
 //		String[][] result = rt.getByColumn("'1'",  "1");
 //		System.out.println(Arrays.deepToString(result));
-//		Path[] notAllowed = {Paths.get("C:\\Users\\user\\Documents\\Projects\\FileIndexing\\test")};
-//		quickScan(filters, path, "C:/Users", notAllowed);
-//		sortTable("flzextts", path);
-//		sortAllTable(path);
-//		hardScan(filters, "C:\\Users\\user\\Documents\\Projects");
-		search(filters);
-	}
+		
+		Path[] notAllowed = {Paths.get("C:\\Users\\user\\Documents\\Projects\\FileIndexing\\test")};
+		File[] drives = File.listRoots();
+		if (drives != null && drives.length > 0) {
+		    for (int i =0; i<drives.length ; i++) {
+		    	//hardScan(filters, drives[i].getPath());
+		    	System.out.println(drives[i].getPath());
+		    }
+		}
+		
 
+//		    System.out.println("Description: "+fsv.getSystemTypeDescription(path));
+		}
+
+//		hardScan(filters, "C:\\Users\\User\\Documents\\לימודים");
+//		quickScan(filters, path, "C:/Users", notAllowed);
+//		search(filters);
+//	}
+
+	//
 	public static void quickScan(Filter[] filters, String path, String dir, Path[] notAllowed) throws SQLException, IOException {
 		QuickScan quickScan = new QuickScan(filters,path, dir, notAllowed);
 		quickScan.start();
