@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import DataSorter.MyFile;
+
 
 
 /**
@@ -105,6 +105,12 @@ public class ExtensionFilter implements Filter{
 	}
 	
 	@Override
+	/**
+	 * The method gets a path to file and returns the name of the table which it contains.
+	 * 
+	 * @param query - A Path to a file.
+	 * @return - A array of the classify result and the filter extension: 'ext' (extension )
+	 */
 	public String[] classify(String query) {
 		query = query.substring(query.lastIndexOf('\\')+1);
 		if (!query.contains(".")) return new String[] {"", "ext"};
@@ -116,6 +122,10 @@ public class ExtensionFilter implements Filter{
 	}
 
 	@Override
+	/**
+	
+	 * @return - the name of the filter
+	 */
 	public String getName() {
 		return this.name;
 	}

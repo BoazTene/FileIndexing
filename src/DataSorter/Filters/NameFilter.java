@@ -126,7 +126,7 @@ public class NameFilter implements Filter{
 	 * The method gets a path to file and returns the name of the table which it contains.
 	 * 
 	 * @param query - A Path to a file.
-	 * @return - A array of the classify result and the filter exentison: 'fl' (First Letter)
+	 * @return - A array of the classify result and the filter Name: 'fl' (First Letter)
 	 */
 	public String[] classify(String query) {
 		String result = "none";

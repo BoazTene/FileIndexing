@@ -8,7 +8,7 @@ import java.nio.file.*;
 /**
  * This class is a Score Filter, it will give the file a score bonus if the current user created it.
  *
- * @author Boaz Tene
+ * 
  */
 public class Owner implements ScoreFilter {
     @Override
@@ -26,6 +26,7 @@ public class Owner implements ScoreFilter {
         } catch (NoSuchFileException | AccessDeniedException e) {
           return "";
         } catch (Exception e) {
+        	
             return Files.getOwner(path).getName();
         }
     }

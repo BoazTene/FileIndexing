@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * This Class is a Score Filter, it will give a score by the last modified variable.
  *
- * @author Boaz Tene
+ * 
  */
 public class LastModified implements ScoreFilter {
     /**
