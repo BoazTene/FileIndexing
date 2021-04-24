@@ -22,7 +22,10 @@ public class RegisterDirectory {
     private final Map<WatchKey,Path> keys;
     private boolean trace = true;
     private Path[] notAllowed;
-    		
+    
+    /* constructor - initialize RegisterDirectory properties
+     * 
+     */
 	public RegisterDirectory(WatchService watcher, Map<WatchKey,Path> keys, Path[] notAllowed) {
 		this.notAllowed = notAllowed;
 		this.watcher = watcher;

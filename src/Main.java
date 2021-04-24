@@ -38,9 +38,9 @@ public class Main {
 
 
 		hardScan(filters);
-//		quickScan(filters);
+		quickScan(filters);
 //
-//		search(filters);
+		search(filters);
 
 	}
 
