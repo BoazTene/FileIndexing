@@ -12,8 +12,8 @@ import DataSorter.Filters.*;
  *
  */
 public class Classify {
-	private Filter[] filters;
-	private String query;
+	private final Filter[] filters;
+	private final String query;
 	
 	/**
 	 * This is the class constructor, it initializing the filters, query fields.
@@ -33,8 +33,7 @@ public class Classify {
 	 * @return - String the table name.
 	 */
 	public String GetTableNameByFilters() {
-		String tableName = "";
-		
+
 		String[][] classifyResult = new String[this.filters.length][2];
 		
 		for (int i = 0; i < this.filters.length; i++) {
@@ -59,13 +58,13 @@ public class Classify {
 			char[] temp = array[i][0].toCharArray();
 			result[i][0] = 0;
 			result[i][1] = i;
-			
-			for (int j = 0; j < temp.length; j++) {
-				result[i][0] += findNumerology(temp[j]);
+
+			for (char c : temp) {
+				result[i][0] += findNumerology(c);
 			}
 		}
 		
-	    int[] temp = new int[2];    
+	    int[] temp;
 		
 		 for (int i = 0; i < result.length; i++) {     
 	          for (int j = i+1; j < result.length; j++) {     
@@ -77,12 +76,12 @@ public class Classify {
 	          }     
         }    
 		 
-		String tableName = "";
-		for (int i = 0; i < result.length; i++) {
-			tableName += array[result[i][1]][1] + array[result[i][1]][0];
+		StringBuilder tableName = new StringBuilder();
+		for (int[] ints : result) {
+			tableName.append(array[ints[1]][1]).append(array[ints[1]][0]);
 		}
 		
-		return tableName;
+		return tableName.toString();
 	}
 	
 	private int findNumerology(char chr) {

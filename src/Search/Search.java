@@ -52,7 +52,7 @@ public class Search implements Runnable {
 
 //		if (this.tableName.split(this.filters[this.filters.length-1].getName(), 2)[1].equals("")) {
 		List<String> results = new ArrayList<String>(Arrays.asList(rt.getLikeByColumn("value", this.query)));
-		List<String> temp = Arrays.asList(searchLikeTables());
+		String[] temp = searchLikeTables();
 		for (String x : temp){
 			   if (!results.contains(x))
 			      results.add(x);
@@ -73,20 +73,20 @@ public class Search implements Runnable {
 		System.out.println(this.tableName);
 		String[] tables = this.dataBase.getTables();
 
-		for (int i = 0; i < tables.length; i++) {
+		for (String s : tables) {
 			try {
-				if (tables[i].contains(this.tableName) || tables[i].contains(this.tableName.split("ext")[1]) ) {
-					Table table = new Table(this.dataBase, tables[i]);
-					ReadTable rt  = new ReadTable(this.dataBase, table);
+				if (s.contains(this.tableName) || s.contains(this.tableName.split("ext")[1])) {
+					Table table = new Table(this.dataBase, s);
+					ReadTable rt = new ReadTable(this.dataBase, table);
 					this.result.addAll(Arrays.asList(rt.getLikeByColumn("value", this.query)));
 				}
-			} catch (Exception e) {
-				
+			} catch (Exception ignored) {
+
 			}
-			
+
 		}
 
-		return (String[]) this.result.toArray(new String[0]);
+		return this.result.toArray(new String[0]);
 	}
 
 	/**
