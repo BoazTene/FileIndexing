@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * The class gets a path to a file and an array of filters and returns the files score.
  *
-
+ * @author Boaz Tene
  */
 public class Score {
 	private final String path;

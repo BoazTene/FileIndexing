@@ -3,7 +3,7 @@ package Score.Filters.LastModified;
 /**
  * This Class is represents a single doze function for the LastModified score filter.
  *
- * 
+ * @author Boaz Tene
  */
 public class LastModifiedFunction {
     /**

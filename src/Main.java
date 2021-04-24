@@ -1,14 +1,9 @@
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-import DataBase.Table.SortTable;
 import DataSorter.FileTracker.QuickScan.QuickScan;
-import DataBase.DataBase;
-import DataBase.Table.Table;
 import DataSorter.SortByFilter;
 import DataSorter.Filters.ExtensionFilter;
 import DataSorter.Filters.Filter;
@@ -48,19 +43,6 @@ public class Main {
 		QuickScan quickScan = new QuickScan(filters);
 
 		quickScan.start();
-	}
-
-	public static void sortTable(String tableName) throws SQLException {
-		DataBase dataBase = new DataBase();
-		Table table = new Table(dataBase, tableName);
-		SortTable st = new SortTable(dataBase, table);
-		st.sortBy("score");
-	}
-
-	public static void sortAllTable(String path) throws SQLException {
-		DataBase dataBase = new DataBase();
-		SortTable st = new SortTable(dataBase);
-		st.sortAll();
 	}
 
 	public static void hardScan(Filter[] filters) throws SQLException {

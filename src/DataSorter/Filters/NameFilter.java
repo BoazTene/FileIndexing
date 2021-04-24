@@ -48,12 +48,7 @@ public class NameFilter implements Filter{
 
 	}
 
-
-
-
 	// this function gets an char and arrays of chars, it returns the index of the char in the array
-
-
 	public int getIndexOf(char toSearch, char[] tab ) {
 	  for( int i=0; i< tab.length ; i ++ )
 	    if( tab[ i ] == toSearch)

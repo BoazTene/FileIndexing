@@ -1,8 +1,20 @@
 package Score.Filters;
 
 import java.io.IOException;
-// an interface for score filter
+
+/**
+ * This is an interface that represents ScoreFilter.
+ *
+ * @author Boaz Tene
+ */
 public interface ScoreFilter {
-	// this abstract function gets path and return the score in the specified filter
+
+    /**
+     * This method gets a String path of a file and returns a score for the file.
+     *
+     * @param path
+     * @return
+     * @throws IOException
+     */
     int getScore(String path) throws IOException;
 }

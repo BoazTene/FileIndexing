@@ -1,10 +1,8 @@
 package DataBase.Table;
 
-import java.io.IOException;
-import java.nio.CharBuffer;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 import DataBase.DataBase;
 
@@ -16,8 +14,8 @@ import DataBase.DataBase;
  *
  */
 public class WriteTable {
-	private Table table;
-	private PreparedStatement pstmt;
+	private final Table table;
+	private final PreparedStatement pstmt;
 	
 	/**
 	 * This is class constructor.
