@@ -23,10 +23,10 @@ public class Owner implements ScoreFilter {
     private String getFileOwner(Path path) throws IOException {
         try {
             return Files.getOwner(path).getName().split("\\\\")[1];
-        } catch (NoSuchFileException | AccessDeniedException e) {
-          return "";
-        } catch (Exception e) {
+        } catch (IndexOutOfBoundsException e) {
             return Files.getOwner(path).getName();
+        } catch (Exception e) {
+            return "";
         }
     }
 }
