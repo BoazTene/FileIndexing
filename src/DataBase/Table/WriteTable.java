@@ -71,7 +71,7 @@ public class WriteTable {
 	 * @param sColumn - Array, whom elements are the value of each column.
 	 * @throws SQLException
 	 */
-	public void newRow(String[] sColumn) throws SQLException {
+	public void newRow(String[] sColumn) throws SQLException, InterruptedException {
 		ReadTable rt = new ReadTable(this.table.getDataBase(), this.table);
 		if (rt.getByColumn(this.table.getColumns()[0][0], sColumn[0]).length != 0 ) {
 	        String sql =String.format("DELETE FROM %s WHERE %s = ?;", this.table.getDbName(), this.table.getColumns()[0][0]);
@@ -84,8 +84,15 @@ public class WriteTable {
 		for (int i = 0; i < sColumn.length; i++) {
 			this.pstmt.setString(i+1, sColumn[i]);
 		}
-		
-		this.pstmt.executeUpdate();
+
+		for (int i = 0; i < 50; i++) {
+			try {
+				this.pstmt.executeUpdate();
+				break;
+			} catch (SQLException e) {
+				Thread.sleep(500);
+			}
+		}
 
 	}
 }
