@@ -52,7 +52,6 @@ public class EntryHandler implements Entry {
 
         if ("ENTRY_CREATE".equals(kind.toString())) {
             Classify classify = new Classify(filters, path.toAbsolutePath().toString());
-            System.out.println(classify.GetTableNameByFilters());
             addToTable(classify.GetTableNameByFilters(), new String[]{path.toString(), String.valueOf(new Score(SCORE_FILTERS, path.toString()).getScore())});
         } else if ("ENTRY_DELETE".equals(kind.toString())) {
             Classify classify = new Classify(filters, path.toAbsolutePath().toString());

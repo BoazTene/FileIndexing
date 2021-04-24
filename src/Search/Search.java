@@ -70,7 +70,6 @@ public class Search implements Runnable {
 	 * @throws SQLException
 	 */
 	public String[] searchLikeTables() throws SQLException {
-		System.out.println(this.tableName);
 		String[] tables = this.dataBase.getTables();
 
 		for (String s : tables) {
