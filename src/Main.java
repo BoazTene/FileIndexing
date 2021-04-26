@@ -37,6 +37,7 @@ public class Main {
 //
 		search(filters);
 
+
 	}
 
 	public static void quickScan(Filter[] filters) throws SQLException, IOException {
