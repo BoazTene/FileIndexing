@@ -45,7 +45,7 @@ public class Gui extends JFrame {
 		}
 		
 		this.repaint();
-		
+		System.out.println("ddd");
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
