@@ -15,9 +15,9 @@ import GUI.Components.SearchResults;
 
 
 public class Gui extends JFrame {
-	private ArrayList<GComponent> components;
+	private final ArrayList<GComponent> components;
 	
-	public Gui () {
+	public Gui () throws InterruptedException {
 		this.components = new ArrayList<GComponent>();
 		setSize(600,600);//frame size 300 width and 300 height  
 		setLayout(null);//no layout manager  
@@ -30,17 +30,17 @@ public class Gui extends JFrame {
 //	    this.paint(getGraphics());
 //		this.add(searchButton);
 		GComponent gComponenet = new InputField();
-		GComponent scroll = new SearchResults();
+		SearchResults scroll = new SearchResults();
 		this.components.add(gComponenet);
 		this.components.add(scroll);
 		this.paint();
 		this.revalidate();
 		this.repaint();
+
 	}
 	
 	public void paint() {
-		for (Iterator<GComponent> iter = this.components.iterator(); iter.hasNext(); ) {
-			GComponent c = iter.next();
+		for (GComponent c : this.components) {
 			this.add(c.getComponent());
 		}
 		
@@ -48,9 +48,7 @@ public class Gui extends JFrame {
 		
 	}
 	
-	public static void main(String args[]){  
-		Gui f = new Gui();  
-		
-		
+	public static void main(String[] args) throws InterruptedException {
+		Gui f = new Gui();
 	}
 }

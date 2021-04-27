@@ -34,7 +34,6 @@ public class Main {
 
 		hardScan(filters);
 		quickScan(filters);
-//
 		search(filters);
 
 
