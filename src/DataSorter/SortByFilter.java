@@ -34,6 +34,8 @@ public class SortByFilter extends Thread{
 	private final DataBase dataBase;
 	private static final ScoreFilter[] SCORE_FILTERS = {new LastModified(), new Owner()};
 	private final boolean system;
+	public static int index = 0;
+	public static int listLength;
 
 
 /**
@@ -60,7 +62,7 @@ public class SortByFilter extends Thread{
 		}
 
 
-		int index = 0;
+		
 
 		for (int i = index; i < this.files.size(); i++) {
 
@@ -151,5 +153,6 @@ public class SortByFilter extends Thread{
 			}
 
 		}
+		listLength = files.size();
 	}
 }

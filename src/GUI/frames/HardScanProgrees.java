@@ -8,47 +8,22 @@ import javax.swing.*;
 import DataSorter.SortByFilter;
 import gui.GFrame;
 import gui.Gui;
+import gui.Components.GComponent;
 
 import java.awt.event.*;
 public class HardScanProgrees extends JFrame implements GFrame {
 	public static int filesNum = SortByFilter.listLength ;
 	public static int currentIndex = SortByFilter.index;
+	public static JProgressBar bar = new JProgressBar();
+	public static JLabel label = new JLabel("Please wait for the hard scan to finish...");
  
-    // create a frame
-    static JFrame f;
- 
-    static JProgressBar b;
-    private static JLabel label;
- 
-    public static void main()
+    
+    public static void HardScanProgrees()
     {
-    	label = new JLabel ("Please wait for the hard scan to finish...");
-    	
+		gui.Gui.components.clear();
+		gui.Gui.components.add((GComponent) label);
+		gui.Gui.components.add((GComponent) bar);
    
-        // create a frame
-      
- 
-        // create a panel
-        JPanel p = new JPanel();
- 
-        // create a progressbar
-        b = new JProgressBar();
- 
-        // set initial value
-        b.setValue(0);
- 
-        b.setStringPainted(true);
- 
-        // add progressbar
-        p.add(b);
- 
-        // add panel
-        
-        p.add(label);
- 
-        // set the size of the frame
- 
-        fill();
     }
  
     // function to increase progress
@@ -61,11 +36,9 @@ public class HardScanProgrees extends JFrame implements GFrame {
         	//currentIndex = SortByFilter.index;
             while (num2 <= num1) {
                 // fill the menu bar
-                b.setValue((num2/num1 )*100);
+                bar.setValue((num2/num1 )*100);
                 Thread.sleep(100);
                 num2++;
-                
-               System.out.println(num2);
                 
             }
             
@@ -77,7 +50,9 @@ public class HardScanProgrees extends JFrame implements GFrame {
 
 
 	@Override
-	public void paint(Gui graphics) {
-		main();
+	public void paint(gui.Gui graphics) {
+		graphics.paint();
+		graphics.repaint();
+		graphics.revalidate();
 	}
 }
