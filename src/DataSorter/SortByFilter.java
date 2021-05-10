@@ -20,6 +20,7 @@ import Score.Filters.Owner.Owner;
 import Score.Filters.ScoreFilter;
 import Score.Score;
 import Search.Classify;
+import gui.Loader;
 
 
 /**
@@ -55,6 +56,8 @@ public class SortByFilter extends Thread{
 	 * @throws SQLException
 	 */
 	private void sort() throws IOException, SQLException {
+		Loader loader = new Loader();
+
 		File[] drivers = File.listRoots();
 		assert drivers != null && drivers.length > 0;
 		for (File driver : drivers) {
@@ -75,6 +78,8 @@ public class SortByFilter extends Thread{
 
 			index++;
 		}
+		
+		loader.close();
 	}
 
 	/**

@@ -61,6 +61,7 @@ public class WriteTable {
 		PreparedStatement pstmt = this.table.getDataBase().getConnection().prepareStatement(sql);
 		pstmt.setString(1, sColumn[0]);
 		pstmt.executeUpdate();
+		pstmt.close();
 	}
 
 	/**
@@ -77,6 +78,7 @@ public class WriteTable {
 	        PreparedStatement pstmt = this.table.getDataBase().getConnection().prepareStatement(sql);
 	        pstmt.setString(1, sColumn[0]);
 	        pstmt.executeUpdate();
+	        pstmt.close();
 		}
 		
 		for (int i = 0; i < sColumn.length; i++) {

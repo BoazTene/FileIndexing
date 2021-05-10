@@ -98,6 +98,9 @@ public class ReadTable {
 			i++;
 		}
 		
+		rs.close();
+		ps.close();
+		
 		return result;
 	}
 	
@@ -154,6 +157,7 @@ public class ReadTable {
 	        }
 		        
 	        res.close();
+	        ps.close();
 		        
 		} catch (SQLException e) {
 			System.out.println("Column: " + column + " Value: " + value + " Sql: " + String.format("SELECT COUNT(*) FROM %s WHERE %s = '%s'",

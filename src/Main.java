@@ -11,7 +11,9 @@ import DataSorter.Filters.ExtensionFilter;
 import DataSorter.Filters.Filter;
 import DataSorter.Filters.NameFilter;
 import Search.Search;
+import gui.GFrame;
 import gui.Gui;
+import gui.frames.SearchFrame;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,9 +37,14 @@ public class Main {
 		filters[1] = new ExtensionFilter();
 		String path = "db/DataBase.db";
 
-		Gui fSerach = new Gui();
+		Gui gui = new Gui();
+		GFrame search = new SearchFrame();
+		gui.setFrame(search);
+
 		hardScan(filters);
 		quickScan(filters);
+		
+		
 
 
 	}

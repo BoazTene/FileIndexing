@@ -11,7 +11,7 @@ import gui.Gui;
 import gui.Components.GComponent;
 
 import java.awt.event.*;
-public class HardScanProgrees extends JFrame implements GFrame {
+public class HardScanProgrees implements GFrame {
 	public static int filesNum = SortByFilter.listLength ;
 	public static int currentIndex = SortByFilter.index;
 	public static JProgressBar bar = new JProgressBar();
@@ -44,6 +44,7 @@ public class HardScanProgrees extends JFrame implements GFrame {
             
         }
         catch (Exception e) {
+        	e.printStackTrace();
         }
     }
     

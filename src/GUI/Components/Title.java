@@ -1,4 +1,4 @@
-package GUI.Components;
+package gui.Components;
 
 public class Title {
 

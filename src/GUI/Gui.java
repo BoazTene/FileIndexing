@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import DataSorter.HardScanProcess;
+//import DataSorter.HardScanProcess;
 import gui.Components.GComponent;
 import gui.Components.InputField;
 import gui.Components.SearchButton;
@@ -31,7 +31,7 @@ public class Gui extends JFrame {
 		g = getGraphics();
 		initializeWindow();
 		GFrame search = new HardScanProgrees();
-		setFrame(search);
+
 	
 		
 	}
