@@ -1,4 +1,4 @@
-package GUI.Components;
+package gui.Components;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -10,10 +10,16 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-public class SearchResults implements GComponent, ActionListener {
+/**
+ * This class represents the SearchResults component.
+ */
+public class SearchResults implements gui.Components.GComponent, ActionListener {
 	private final JPanel panel;
 	private static DefaultListModel<String> defaultListModel;
 
+	/**
+	 * This is the constructor, it initializing the Search Result properties.
+	 */
 	public SearchResults() {
 		this.panel = new JPanel(new BorderLayout());
 		
@@ -38,6 +44,7 @@ public class SearchResults implements GComponent, ActionListener {
 					int index = list.locationToIndex(evt.getPoint());
 					String path = defaultListModel.elementAt(index);
 					try {
+						if (!path.equals("Search ended!"))
 						Runtime.getRuntime().exec("explorer.exe /select," + path);
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -51,25 +58,30 @@ public class SearchResults implements GComponent, ActionListener {
 		});
 	}
 
+	/**
+	 * This method add an result to window.
+	 * @param result The added result.
+	 */
 	public static void addResult(String result) {
 		defaultListModel.addElement(result);
 	}
 
+	/**
+	 * This method clear all the results.
+	 */
 	public static void resetResults() {
 		defaultListModel.clear();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-
 	}
 
 	@Override
 	public Component getComponent() {
 		// TODO Auto-generated method stub
 		return this.panel;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
 	}
 
 }

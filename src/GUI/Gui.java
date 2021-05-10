@@ -1,54 +1,61 @@
-package GUI;
+package gui;
 
-import java.awt.*;
-import java.awt.event.WindowAdapter;
+import java.awt.Graphics;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants.*;
-import GUI.Components.GComponent;
-import GUI.Components.InputField;
-import GUI.Components.SearchResults;
+
+import gui.Components.GComponent;
+import gui.Components.InputField;
+import gui.Components.SearchButton;
+import gui.Components.SearchResults;
+import gui.frames.SearchFrame;
 
 
+
+/**
+ * This class is the main gui class.
+ * THe class paints the window, add new components.
+ */
 public class Gui extends JFrame {
-	private final ArrayList<GComponent> components;
+	public static final ArrayList<GComponent> components = new ArrayList<GComponent>();
+	public static Graphics g = null;
+
+	/**
+	 * This is the constructor, initializing the window and the components.
+	 */
+	public Gui () {
+		g = getGraphics();
+		initializeWindow();
+		GFrame search = new SearchFrame();
+		setFrame(search);
 	
-	public Gui () throws InterruptedException {
-		this.components = new ArrayList<GComponent>();
-		setSize(600,600);//frame size 300 width and 300 height  
-		setLayout(null);//no layout manager  
+		
+	}
+	
+	public void setFrame(GFrame frame) {
+		frame.paint(this);
+	}
+
+	/**
+	 * This method initializing the window properties.
+	 */
+	private void initializeWindow() {
+		setSize(600,600);//frame size 300 width and 300 height
+		setLayout(null);//no layout manager
 		setVisible(true);
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-//		JLabel searchButton = new JLabel("Search something...");
-//	    searchButton.setBounds(10,0, 200,30);  
-//	    searchButton.setFont(new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20) );
-//	    Graphics g = getGraphics();
-//	    this.paint(getGraphics());
-//		this.add(searchButton);
-		GComponent gComponenet = new InputField();
-		SearchResults scroll = new SearchResults();
-		this.components.add(gComponenet);
-		this.components.add(scroll);
-		this.paint();
-		this.revalidate();
-		this.repaint();
-
+		setResizable(false);
 	}
-	
+
+	/**
+	 * This method repaint the window.
+	 */
 	public void paint() {
-		for (GComponent c : this.components) {
+		for (GComponent c : components) {
 			this.add(c.getComponent());
 		}
-		
-		this.repaint();
-		System.out.println("ddd");
 	}
-	
-	public static void main(String[] args) throws InterruptedException {
-		Gui f = new Gui();
-	}
+
 }
