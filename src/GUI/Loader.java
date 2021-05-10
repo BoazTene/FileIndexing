@@ -7,11 +7,22 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
 
+
+/**
+ * 
+ * This class is the loader frame.
+ * 
+ * @author Boaz Tene
+ *
+ */
 public class Loader {
 
     static final WaitLayerUI layerUI = new WaitLayerUI();
     JFrame frame = new JFrame("Scanning your pc...");
 
+    /**
+     * This is the constructor.
+     */
     public Loader() {
         JPanel panel = new JPanel() {
 
@@ -20,6 +31,7 @@ public class Loader {
                 return new Dimension(400, 300);
             }
         };
+        
         JLayer<JPanel> jlayer = new JLayer<>(panel, layerUI);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(jlayer);
@@ -28,14 +40,23 @@ public class Loader {
         layerUI.start();
     }
     
+    /**
+     * This method closes the frame.
+     */
     public void close() {
     	this.frame.dispose();
     }
 
 }
 
-class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
 
+/**
+ * This class is the UI of the spinning loader.
+ * 
+ * @author Boaz Tene
+ *
+ */
+class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
     private boolean mIsRunning;
     private boolean mIsFadingOut;
     private Timer mTimer;
@@ -43,6 +64,9 @@ class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
     private int mFadeCount;
     private int mFadeLimit = 15;
 
+    /**
+     * This method draws the loader at specific angle.
+     */
     @Override
     public void paint(Graphics g, JComponent c) {
         int w = c.getWidth();
@@ -73,7 +97,10 @@ class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
         }
         g2.dispose();
     }
-
+    
+    /**
+     * This method is called every tick and updates the spin.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (mIsRunning) {
@@ -93,6 +120,9 @@ class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
         }
     }
 
+    /**
+     * Starts the animation.
+     */
     public void start() {
         if (mIsRunning) {
             return;
@@ -106,6 +136,9 @@ class WaitLayerUI extends LayerUI<JPanel> implements ActionListener {
         mTimer.start();
     }
 
+    /**
+     * This method stops the animation.
+     */
     public void stop() {
         mIsFadingOut = true;
     }
