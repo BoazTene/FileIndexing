@@ -1,8 +1,7 @@
 package DataSorter.FileTracker.EntryHandlers; 
 
 /**
- * This interface is the second argument to be passed in the WatchDir Object.
- * The interace is build to handle the OVERFLOW event.
+ * The interface handles the OVERFLOW event.
  * 
  * @author Boaz Tene
  *
