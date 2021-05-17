@@ -12,6 +12,9 @@ import DataSorter.Filters.*;
  *
  */
 public class Classify {
+	private static final int numberOfCharacterInAlphabet = 26;
+	private static final char[][] num_val={{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
+			{1, 2, 3, 4, 5, 8, 3, 5, 1, 1, 2, 3, 4, 5, 7, 8, 1, 2, 3, 4, 6, 6, 6, 5, 1, 7}};
 	private final Filter[] filters;
 	private final String query;
 	
@@ -83,13 +86,17 @@ public class Classify {
 		
 		return tableName.toString();
 	}
-	
+
+	/**
+	 * This method finds the numerology's number of a char.
+	 * @param chr
+	 * @return
+	 */
 	private int findNumerology(char chr) {
 		chr = Character.toUpperCase(chr);
-		 char[][] num_val={{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'},
-                 {1, 2, 3, 4, 5, 8, 3, 5, 1, 1, 2, 3, 4, 5, 7, 8, 1, 2, 3, 4, 6, 6, 6, 5, 1, 7}};
+
 		
-		 for(int i=0;i<26;i++) {
+		 for(int i=0;i<numberOfCharacterInAlphabet;i++) {
 	            if(chr==(num_val[0][i])){
 	                return num_val[1][i];
 	            }

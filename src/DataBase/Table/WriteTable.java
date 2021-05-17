@@ -16,6 +16,8 @@ import DataBase.DataBase;
 public class WriteTable {
 	private final Table table;
 	private final PreparedStatement pstmt;
+	private static final int tryAfterFailed = 50;
+	private static final int sleepBetweenTries = 500;
 	
 	/**
 	 * This is class constructor.
@@ -83,13 +85,13 @@ public class WriteTable {
 			this.pstmt.setString(i+1, sColumn[i]);
 		}
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < tryAfterFailed; i++) {
 			try {
 				this.pstmt.executeUpdate();
 				break;
 			} catch (SQLException e) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(sleepBetweenTries);
 				} catch (InterruptedException interruptedException) {
 					interruptedException.printStackTrace();
 				}

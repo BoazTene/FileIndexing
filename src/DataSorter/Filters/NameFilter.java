@@ -33,20 +33,6 @@ public class NameFilter implements Filter{
 		WriteTable wt = new WriteTable(table);
 		wt.newRow(data);
 	}
-	
-	@Override
-	
-	public void addIndex() throws SQLException {
-		Iterator<String> itr;
-		itr = filesList.iterator();
-		while (itr.hasNext()) {
-			String thisFile = itr.next();
-			String[] data = {thisFile};
-
-			addToTable(classify(thisFile)[0], data);
-		}
-
-	}
 
 	// this function gets an char and arrays of chars, it returns the index of the char in the array
 	public int getIndexOf(char toSearch, char[] tab ) {
@@ -59,55 +45,6 @@ public class NameFilter implements Filter{
 	
 	// this function gets a char, and returns its name (in words)
 	public String numberToStringNumber(char chr) {
-		final char[] unacceptableChars = {
-				'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-				'-', '_', '=', '+', '[', '{', ']', '}', '\\', '|', '/', '?',
-				'~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-				'.', '>', ',', '<', ';', ':', '\'', '"'};
-		
-		final String[] values = {
-				"one", 
-				"two",
-				"three",
-				"four",
-				"five",
-				"six",
-				"seven",
-				"eight",
-				"nine",
-				"zero",
-				"hyphen",
-				"dash",
-				"equal",
-				"plus",
-				"obrackets",
-				"obraces",
-				"cbrackets",
-				"cbraces",
-				"backslash",
-				"vertical",
-				"slash",
-				"quation",
-				"ampersand",
-				"exclamation",
-				"atsign",
-				"hashtag",
-				"dolar",
-				"precentage",
-				"power",
-				"and",
-				"mul",
-				"oparentheses",
-				"cparentheses",
-				"",
-				"bigger",
-				"comma",
-				"less",
-				"semicolon",
-				"colon",
-				"apostrophe",
-				"ellipsis"
-		};
 
 		try {
 			return values[getIndexOf(chr, unacceptableChars)];
@@ -115,14 +52,14 @@ public class NameFilter implements Filter{
 			return "";
 		}		
 	}
-	
-	@Override
+
 	/**
 	 * The method gets a path to file and returns the name of the table which it contains.
-	 * 
+	 *
 	 * @param query - A Path to a file.
 	 * @return - A array of the classify result and the filter Name: 'fl' (First Letter)
 	 */
+	@Override
 	public String[] classify(String query) {
 		String result = "none";
 		

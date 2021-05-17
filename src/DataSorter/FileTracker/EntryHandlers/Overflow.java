@@ -9,7 +9,7 @@ package DataSorter.FileTracker.EntryHandlers;
  */
 public interface Overflow {
 	/**
-	 * This method will be called each time a OVERFLOW even is occured.
+	 * This method will be called each time a OVERFLOW even is occurred.
 	 */
 	void overflow();
 }

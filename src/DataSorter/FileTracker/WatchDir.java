@@ -3,18 +3,21 @@ package DataSorter.FileTracker;
 import java.nio.file.*;
 import static java.nio.file.StandardWatchEventKinds.*;
 import static java.nio.file.LinkOption.*;
-import java.nio.file.attribute.*;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
 import DataSorter.FileTracker.EntryHandlers.*;
 
+/**
+ * Watches a directory (or tree) for changes to files.
+ *
+ * @author Boaz Tene
+ */
 public class WatchDir {
 	private final WatchService watcher;
 	private final Map<WatchKey, Path> keys;
-	private RegisterDirectory registerDirectory;
-	private Path[] notAllowed;
+	private final RegisterDirectory registerDirectory;
 
 	@SuppressWarnings("unchecked")
 	static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -22,20 +25,21 @@ public class WatchDir {
 	}
 
 	public WatchDir(Path[] dirs, Path[] notAllowed) throws IOException {
-		this.notAllowed = notAllowed;
 		this.watcher = FileSystems.getDefault().newWatchService();
 		this.keys = new HashMap<WatchKey, Path>();
 
 
 		this.registerDirectory = new RegisterDirectory(watcher, keys, notAllowed);
 		for (Path dir : dirs) {
-			System.out.format("Scanning %s ...\n", dir);
 			registerAll(dir);
 		}
 
-		System.out.println("Done.");
 	}
 
+	/**
+	 * Register the given directory, and all its sub-directories, with the
+	 * WatchService.
+	 */
 	public void registerAll(Path dir) throws IOException {
 		this.registerDirectory.registerAll(dir);
 	}

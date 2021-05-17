@@ -16,8 +16,8 @@ import DataBase.DataBase;
 public class Table {
 	public static String[][] columns = {{"value", "text"}, {"score", "integer"}};
 
-	private DataBase dataBase;
-	private String dbName;
+	private final DataBase dataBase;
+	private final String dbName;
 
 	/**
 	 * Class constructor.
@@ -69,16 +69,8 @@ public class Table {
 		return dbName;
 	}
 
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
-	}
-
 	public String[][] getColumns() {
 		return columns;
-	}
-
-	public void setColumns(String[][] columns) {
-		columns = columns;
 	}
 
 	public DataBase getDataBase() {

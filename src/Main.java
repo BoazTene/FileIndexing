@@ -25,28 +25,34 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws SQLException, IOException {
-
 		Filter[] filters = new Filter[2];
 		filters[0] = new NameFilter();
 		filters[1] = new ExtensionFilter();
-		String path = "db/DataBase.db";
 
 
-		hardScan(filters);
 		quickScan(filters);
+		System.out.println("Hello this is the speed search.\nWith this tool you can search a file through your entire computer.");
+		hardScan(filters);
 //
 		search(filters);
 
 	}
 
 	public static void quickScan(Filter[] filters) throws SQLException, IOException {
+		System.out.println("Please wait while we are loading...");
 		QuickScan quickScan = new QuickScan(filters);
+		System.out.println("Finished loading.");
 
 		quickScan.start();
 	}
 
 	public static void hardScan(Filter[] filters) throws SQLException {
+		System.out.println("Scanning your computer, it could take a while.\n" +
+				"You can search at the same time, but if this is your first time you won't find all result");
+
 		new SortByFilter(filters, false).start();
+
+		System.out.println("The scan is over.\n Mazal tov :)");
 	}
 
 	public static void search(Filter[] filters) throws SQLException {
@@ -77,20 +83,5 @@ public class Main {
 			executor.shutdown();
 
 		}
-	}
-
-	public static void listf(String directoryName, List<String> files) {
-		File directory = new File(directoryName);
-
-		// Get all files from a directory.
-		File[] fList = directory.listFiles();
-		if (fList != null)
-			for (File file : fList) {
-				if (file.isFile()) {
-					files.add(file.getPath());
-				} else if (file.isDirectory()) {
-					listf(file.getAbsolutePath(), files);
-				}
-			}
 	}
 }

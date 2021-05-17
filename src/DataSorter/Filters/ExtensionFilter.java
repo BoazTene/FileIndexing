@@ -2,81 +2,27 @@ package DataSorter.Filters;
 
 /**
  * 
- * Filter file extenstion.
+ * This class is a score filter, that filters by the extension of the file.
+ *
  * 
  * @author Itay Bar Nissim
  *
  */
 public class ExtensionFilter implements Filter{
-	private String query;
 	private static final String name = "ext";
 	
-	// not in use
-	public ExtensionFilter(String query) {
-		this.query = query;
-
-	}
-	
 	public ExtensionFilter() {}
-	
-	@Override
-	public void addIndex() {
-		String extension = classify(this.query)[0];
-	}
 
 
-
-	
+	/**
+	 * This method gets a char and returns the first letter of the name of the char.
+	 *
+	 * We need this function because not all the character can be used in the table name, so we replace them to the first letter of their name.
+	 *
+	 * @param chr The char.
+	 * @return The first letter of the char name
+	 */
 	public char numberToStringNumber(char chr) {
-		final char[] unacceptableChars = {
-				'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-				'-', '_', '=', '+', '[', '{', ']', '}', '\\', '|', '/', '?',
-				'~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-				'.', '>', ',', '<', ';', ':', '\'', '"'};
-		
-		final String[] values = {
-				"one", 
-				"two",
-				"three",
-				"four",
-				"five",
-				"six",
-				"seven",
-				"eight",
-				"nine",
-				"zero",
-				"hyphen",
-				"dash",
-				"equal",
-				"plus",
-				"obrackets",
-				"obraces",
-				"cbrackets",
-				"cbraces",
-				"backslash",
-				"vertical",
-				"slash",
-				"quation",
-				"ampersand",
-				"exclamation",
-				"atsign",
-				"hashtag",
-				"dolar",
-				"precentage",
-				"power",
-				"and",
-				"mul",
-				"oparentheses",
-				"cparentheses",
-				"",
-				"bigger",
-				"comma",
-				"less",
-				"semicolon",
-				"colon",
-				"apostrophe",
-				"ellipsis"
-		};
 
 		try {
 			if (getIndexOf(chr, unacceptableChars) == -1) return chr;
@@ -85,10 +31,19 @@ public class ExtensionFilter implements Filter{
 			return 's';
 		}		
 	}
-	
-	public int getIndexOf(char toSearch, char[] tab ) {
-		  for( int i=0; i< tab.length ; i ++ )
-		    if( tab[ i ] == toSearch)
+
+	/**
+	 * This method finds the index of a char in a char array.
+	 *
+	 * If the char not in the array the method will return -1.
+	 *
+	 * @param toSearch The char element.
+	 * @param array The array
+	 * @return The index of char in the array.
+	 */
+	public int getIndexOf(char toSearch, char[] array ) {
+		  for( int i = 0; i < array.length; i++ )
+		    if (array[i] == toSearch)
 		     return i;
 
 		  return -1;
@@ -111,6 +66,10 @@ public class ExtensionFilter implements Filter{
 		return new String[]{new String(extention).replaceAll(" ", ""), "ext"};
 	}
 
+	/**
+	 *
+	 * @return returns the name of the extension: 'ext'.
+	 */
 	@Override
 	public String getName() {
 		return name;
