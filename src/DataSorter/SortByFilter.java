@@ -123,6 +123,8 @@ public class SortByFilter extends Thread{
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
+
+		System.out.println("The scan is over.\n Mazal tov :)");
 	}
 
 

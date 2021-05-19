@@ -50,9 +50,9 @@ public class Main {
 		System.out.println("Scanning your computer, it could take a while.\n" +
 				"You can search at the same time, but if this is your first time you won't find all result");
 
-		new SortByFilter(filters, false).start();
+		SortByFilter sortByFilter = new SortByFilter(filters, false);
+		sortByFilter.start();
 
-		System.out.println("The scan is over.\n Mazal tov :)");
 	}
 
 	public static void search(Filter[] filters) throws SQLException {
@@ -62,6 +62,11 @@ public class Main {
 		while (!query.equals("exist")) {
 			System.out.print("Enter Query: ");
 			query = scanner.nextLine();
+
+			if (query.equals(" ") || query.equals("")) {
+				System.out.println("Can't accept this input.\nPlease try again.");
+				continue;
+			}
 
 			Search search = new Search(filters, query);
 			FutureTask<String>
