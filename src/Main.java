@@ -63,7 +63,7 @@ public class Main {
 			System.out.print("Enter Query: ");
 			query = scanner.nextLine();
 
-			if (query.equals(" ") || query.equals("")) {
+			if (query.charAt(0) == ' ' || query.equals("")) {
 				System.out.println("Can't accept this input.\nPlease try again.");
 				continue;
 			}
